@@ -1,0 +1,26 @@
+{
+  "name": "node-source-walk",
+  "version": "1.0.0",
+  "description": "Execute a callback on every node of a source code's AST and",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mrjoelkemp/node-source-walk"
+  },
+  "keywords": [
+    "ast",
+    "traversal"
+  ],
+  "author": "Joel Kemp <joel@mrjoelkemp.com> (http://www.mrjoelkemp.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mrjoelkemp/node-source-walk/issues"
+  },
+  "homepage": "https://github.com/mrjoelkemp/node-source-walk",
+  "dependencies": {
+    "esprima": "^1.0.4"
+  }
+}
