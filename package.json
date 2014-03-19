@@ -1,6 +1,6 @@
 {
   "name": "node-source-walk",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Execute a callback on every node of a source code's AST and",
   "main": "index.js",
   "scripts": {
