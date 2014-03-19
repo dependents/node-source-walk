@@ -6,8 +6,9 @@ module.exports = function () {
   this.shouldStop = false;
 };
 
-// Adapted from node-detective
-function traverse (node, cb) {
+// Adapted from substack/node-detective
+// Executes cb on a non-array AST node
+module.exports.prototype.traverse = function (node, cb) {
   var that = this;
 
   if (this.shouldStop) return;
@@ -17,7 +18,7 @@ function traverse (node, cb) {
       if(x != null) {
         // Mark that the node has been visited
         x.parent = node;
-        traverse.call(that, x, cb);
+        that.traverse(x, cb);
       }
     });
 
@@ -29,10 +30,10 @@ function traverse (node, cb) {
       if (key === 'parent' || ! node[key]) return;
 
       node[key].parent = node;
-      traverse.call(that, node[key], cb);
+      that.traverse(node[key], cb);
     });
   }
-}
+};
 
 // Executes the passed callback for every traversed node of
 // the passed in src's ast
@@ -41,7 +42,7 @@ module.exports.prototype.walk = function (src, cb) {
 
   var ast = esprima.parse(src);
 
-  traverse.call(this, ast, cb);
+  this.traverse(ast, cb);
 };
 
 // Halts further traversal of the AST

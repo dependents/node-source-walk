@@ -44,3 +44,8 @@ on every node.
 
 * Halts further walking of the AST until another manual call of `walk`.
 * This is super-beneficial when dealing with large source files
+
+`traverse(node, cb)`
+
+* Allows you to traverse an AST node and execute a callback on it
+* Callback should expect the first argument to be an AST node, similar to `walk`'s callback.
