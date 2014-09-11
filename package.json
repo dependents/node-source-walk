@@ -21,6 +21,6 @@
   },
   "homepage": "https://github.com/mrjoelkemp/node-source-walk",
   "dependencies": {
-    "esprima": "^1.0.4"
+    "esprima": "~1.0.4"
   }
 }
