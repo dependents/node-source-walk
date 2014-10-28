@@ -1,9 +1,18 @@
 var esprima = require('esprima');
+var esprimaHarmony = require('esprima-fb');
 
-module.exports = function () {
-  // We use global state to stop the recursive
-  // traversal of the AST
+/**
+ * @param  {Object} options
+ * @param  {Boolean} [options.esprimaHarmony=false]
+ */
+module.exports = function (options) {
+  options = options || {};
+  // We use global state to stop the recursive traversal of the AST
   this.shouldStop = false;
+
+  if (options.esprimaHarmony) {
+    esprima = esprimaHarmony;
+  }
 };
 
 // Adapted from substack/node-detective
@@ -15,7 +24,7 @@ module.exports.prototype.traverse = function (node, cb) {
 
   if (Array.isArray(node)) {
     node.forEach(function (x) {
-      if(x != null) {
+      if(x !== null) {
         // Mark that the node has been visited
         x.parent = node;
         that.traverse(x, cb);

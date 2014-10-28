@@ -1,5 +1,4 @@
-Execute a callback on every node of a source code's AST and
-stop walking whenever you see fit.
+Execute a callback on every node of a source code's AST and stop walking whenever you see fit.
 
 *A variation of [substack/node-detective](https://github.com/substack/node-detective)
 and simplification of [substack/node-falafel](https://github.com/substack/node-falafel).*
@@ -31,6 +30,14 @@ and simplification of [substack/node-falafel](https://github.com/substack/node-f
         }
   });
 
+```
+
+By default, Walker will use `esprima`, but you can switch to `esprima-fb` (harmony branch) as follows:
+
+```js
+var walker = new Walker({
+  esprimaHarmony: true
+});
 ```
 
 ### Public Members
