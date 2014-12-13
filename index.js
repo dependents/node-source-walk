@@ -1,18 +1,16 @@
-var esprima = require('esprima');
-var esprimaHarmony = require('esprima-fb');
+var acorn = require('acorn');
 
 /**
- * @param  {Object} options
- * @param  {Boolean} [options.esprimaHarmony=false]
+ * @param  {Object} options - Options to configure parser
+ * @param  {Boolean} [options.ecmaVersion=5]
  */
 module.exports = function (options) {
-  options = options || {};
+  this.options = options || {};
+
+  this.options.ecmaVersion = this.options.ecmaVersion || 5;
+
   // We use global state to stop the recursive traversal of the AST
   this.shouldStop = false;
-
-  if (options.esprimaHarmony) {
-    esprima = esprimaHarmony;
-  }
 };
 
 // Adapted from substack/node-detective
@@ -49,7 +47,7 @@ module.exports.prototype.traverse = function (node, cb) {
 module.exports.prototype.walk = function (src, cb) {
   this.shouldStop = false;
 
-  var ast = esprima.parse(src);
+  var ast = acorn.parse(src, this.options);
 
   this.traverse(ast, cb);
 };

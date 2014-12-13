@@ -12,7 +12,9 @@
   },
   "keywords": [
     "ast",
-    "traversal"
+    "traversal",
+    "esprima",
+    "acorn"
   ],
   "author": "Joel Kemp <joel@mrjoelkemp.com> (http://www.mrjoelkemp.com/)",
   "license": "MIT",
@@ -21,7 +23,6 @@
   },
   "homepage": "https://github.com/mrjoelkemp/node-source-walk",
   "dependencies": {
-    "esprima": "~1.0.4",
-    "esprima-fb": "~7001.1.0-dev-harmony-fb"
+    "acorn": "~0.10.0"
   }
 }
