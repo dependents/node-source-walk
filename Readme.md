@@ -32,13 +32,16 @@ and simplification of [substack/node-falafel](https://github.com/substack/node-f
 
 ```
 
-By default, Walker will use `esprima`, but you can switch to `esprima-fb` (harmony branch) as follows:
+By default, Walker will use `acorn` supporting ES5, but you can switch to es6 as follows:
 
 ```js
 var walker = new Walker({
-  esprimaHarmony: true
+  ecmaVersion: 6
 });
 ```
+
+* The supplied options are passed through to the parser, so you can configure it according
+to acorn's documentation: https://github.com/marijnh/acorn
 
 ### Public Members
 
