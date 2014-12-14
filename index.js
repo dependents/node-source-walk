@@ -13,8 +13,19 @@ module.exports = function (options) {
   this.shouldStop = false;
 };
 
-// Adapted from substack/node-detective
-// Executes cb on a non-array AST node
+/**
+ * @param  {String} src
+ * @param  {Object} [options] - Parser options
+ * @return {Object} The AST of the given src
+ */
+module.exports.prototype.parse = function(src, options) {
+  return acorn.parse(src, options);
+};
+
+/**
+ * Adapted from substack/node-detective
+ * Executes cb on a non-array AST node
+ */
 module.exports.prototype.traverse = function (node, cb) {
   var that = this;
 
@@ -42,17 +53,26 @@ module.exports.prototype.traverse = function (node, cb) {
   }
 };
 
-// Executes the passed callback for every traversed node of
-// the passed in src's ast
+/**
+ * Executes the passed callback for every traversed node of
+ * the passed in src's ast
+ *
+ * @param {String|Object} src - The source code or AST to traverse
+ * @param {Function} cb - Called for every node
+ */
 module.exports.prototype.walk = function (src, cb) {
   this.shouldStop = false;
 
-  var ast = acorn.parse(src, this.options);
+  var ast = typeof src === 'object' ?
+            src :
+            this.parse(src, this.options);
 
   this.traverse(ast, cb);
 };
 
-// Halts further traversal of the AST
+/**
+ * Halts further traversal of the AST
+ */
 module.exports.prototype.stopWalking = function () {
   this.shouldStop = true;
 };

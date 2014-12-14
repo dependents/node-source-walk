@@ -1,4 +1,4 @@
-Execute a callback on every node of a source code's AST and stop walking whenever you see fit.
+Execute a callback on every node of a file's AST and stop walking whenever you see fit.
 
 *A variation of [substack/node-detective](https://github.com/substack/node-detective)
 and simplification of [substack/node-falafel](https://github.com/substack/node-falafel).*
@@ -13,21 +13,13 @@ and simplification of [substack/node-falafel](https://github.com/substack/node-f
   var walker = new Walker();
 
   // Assume src is the string contents of myfile.js
+  // or the AST of an outside parse of myfile.js
 
   walker.walk(src, function (node) {
-    // Example: looking for the use of define()
-    var callee = node.callee;
-
-    if (callee &&
-        node.type === 'CallExpression' &&
-        callee.type === 'Identifier' &&
-        callee.name === 'define') {
-          console.log('AMD syntax');
-
-          // No need to keep traversing since we found
-          // what we wanted
-          walker.stopWalking();
-        }
+    if (/* some condition */) {
+      // No need to keep traversing since we found what we wanted
+      walker.stopWalking();
+    }
   });
 
 ```
@@ -47,8 +39,8 @@ to acorn's documentation: https://github.com/marijnh/acorn
 
 `walk(src, cb)`
 
-* Generates and recursively walks through the AST for `src` and executes `cb`
-on every node.
+* src: the contents of a file OR its AST (via Esprima or Acorn)
+* cb: a function that is called for every visited node
 
 `stopWalking()`
 
