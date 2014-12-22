@@ -1,4 +1,6 @@
-Execute a callback on every node of a file's AST and stop walking whenever you see fit.
+### node-source-walk [![npm](http://img.shields.io/npm/v/node-source-walk.svg)](https://npmjs.org/package/node-source-walk) [![npm](http://img.shields.io/npm/dm/node-source-walk.svg)](https://npmjs.org/package/node-source-walk)
+
+> Execute a callback on every node of a file's AST and stop walking whenever you see fit.
 
 *A variation of [substack/node-detective](https://github.com/substack/node-detective)
 and simplification of [substack/node-falafel](https://github.com/substack/node-falafel).*

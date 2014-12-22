@@ -12,6 +12,14 @@ describe('node-source-walk', function() {
     ast = walker.parse(src);
   });
 
+  it('does not fail on binary scripts with a hashbang', function() {
+    var walker = new Walker();
+    var src = fs.readFileSync(__dirname + '/example/hashbang.js', 'utf8');
+    assert.doesNotThrow(function() {
+      var ast = walker.parse(src);
+    });
+  });
+
   describe('walk', function() {
     var parseSpy, cb;
 
