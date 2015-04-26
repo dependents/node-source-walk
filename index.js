@@ -19,8 +19,11 @@ module.exports = function (options) {
  * @return {Object} The AST of the given src
  */
 module.exports.prototype.parse = function(src, options) {
-  // Stopgap until https://github.com/marijnh/acorn/commit/e37c07248e7ad553b6b4df451c6ba1a935cb379a is released
-  src = src.replace('#!', '//');
+  options = options || {};
+
+  if (typeof options.allowHashBang === 'undefined') {
+    options.allowHashBang = true;
+  }
 
   return acorn.parse(src, options);
 };
