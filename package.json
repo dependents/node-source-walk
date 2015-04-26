@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/mrjoelkemp/node-source-walk",
   "dependencies": {
-    "acorn": "~0.10.0"
+    "acorn": "^1.0.3"
   },
   "devDependencies": {
     "mocha": "~2.0.1",
