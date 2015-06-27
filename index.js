@@ -7,7 +7,8 @@ var acorn = require('acorn');
 module.exports = function (options) {
   this.options = options || {};
 
-  this.options.ecmaVersion = this.options.ecmaVersion || 5;
+  this.options.ecmaVersion = this.options.ecmaVersion || 6;
+  this.options.sourceType = this.options.sourceType || 'module';
 
   // We use global state to stop the recursive traversal of the AST
   this.shouldStop = false;

@@ -13,8 +13,8 @@
   "keywords": [
     "ast",
     "traversal",
-    "esprima",
-    "acorn"
+    "acorn",
+    "static analysis"
   ],
   "author": "Joel Kemp <joel@mrjoelkemp.com> (http://www.mrjoelkemp.com/)",
   "license": "MIT",
@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/mrjoelkemp/node-source-walk",
   "dependencies": {
-    "acorn": "^1.0.3"
+    "acorn": "~2.0.4"
   },
   "devDependencies": {
     "mocha": "~2.0.1",
