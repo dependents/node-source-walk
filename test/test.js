@@ -20,6 +20,14 @@ describe('node-source-walk', function() {
     });
   });
 
+  it('parses es6 by default', function() {
+    var walker = new Walker();
+    assert.doesNotThrow(function() {
+      walker.walk('() => console.log("foo")', function() {});
+      walker.walk('import {foo} from "bar";', function() {});
+    });
+  });
+
   describe('walk', function() {
     var parseSpy, cb;
 
