@@ -84,9 +84,7 @@ describe('node-source-walk', function() {
       assert(spy.calledOnce);
     });
   });
-});
 
-describe('node-source-walk', function () {
   describe('jsx', function () {
     var spy, walker;
 
