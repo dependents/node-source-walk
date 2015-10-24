@@ -1,14 +1,16 @@
-var acorn = require('acorn');
+var acorn = require('acorn-jsx/inject')(require('acorn'));
+var assign = require('object-assign');
 
 /**
  * @param  {Object} options - Options to configure parser
  * @param  {Boolean} [options.ecmaVersion=5]
  */
 module.exports = function (options) {
-  this.options = options || {};
-
-  this.options.ecmaVersion = this.options.ecmaVersion || 6;
-  this.options.sourceType = this.options.sourceType || 'module';
+  this.options = assign({
+    ecmaVersion: 6,
+    plugins: { jsx: true },
+    sourceType: 'module'
+  }, options);
 
   // We use global state to stop the recursive traversal of the AST
   this.shouldStop = false;

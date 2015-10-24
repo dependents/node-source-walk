@@ -85,3 +85,24 @@ describe('node-source-walk', function() {
     });
   });
 });
+
+describe('node-source-walk', function () {
+  describe('jsx', function () {
+    var spy, walker;
+
+    beforeEach(function () {
+      spy = sinon.spy();
+      walker = new Walker();
+    });
+
+    it('parse', function () {
+      walker.walk('<jsx />', function (node) {
+        if (node.type === 'JSXIdentifier') {
+          spy();
+          assert.equal(node.name, 'jsx');
+        }
+      });
+      assert.equal(spy.callCount, 1);
+    });
+  });
+});
