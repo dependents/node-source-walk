@@ -26,7 +26,7 @@ and simplification of [substack/node-falafel](https://github.com/substack/node-f
 
 ```
 
-By default, Walker will use `acorn` supporting ES6 and the `sourceType: module`, but you can change any of the defaults as follows:
+By default, Walker will use `acorn` supporting ES6 (and JSX) and the `sourceType: module`, but you can change any of the defaults as follows:
 
 ```js
 var walker = new Walker({
