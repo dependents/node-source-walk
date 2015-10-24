@@ -5,10 +5,10 @@ var assign = require('object-assign');
  * @param  {Object} options - Options to configure parser
  * @param  {Boolean} [options.ecmaVersion=5]
  */
-module.exports = function (options) {
+module.exports = function(options) {
   this.options = assign({
     ecmaVersion: 6,
-    plugins: { jsx: true },
+    plugins: {jsx: true},
     sourceType: 'module'
   }, options);
 
@@ -35,14 +35,14 @@ module.exports.prototype.parse = function(src, options) {
  * Adapted from substack/node-detective
  * Executes cb on a non-array AST node
  */
-module.exports.prototype.traverse = function (node, cb) {
+module.exports.prototype.traverse = function(node, cb) {
   var that = this;
 
-  if (this.shouldStop) return;
+  if (this.shouldStop) { return; }
 
   if (Array.isArray(node)) {
-    node.forEach(function (x) {
-      if(x !== null) {
+    node.forEach(function(x) {
+      if (x !== null) {
         // Mark that the node has been visited
         x.parent = node;
         that.traverse(x, cb);
@@ -52,9 +52,9 @@ module.exports.prototype.traverse = function (node, cb) {
   } else if (node && typeof node === 'object') {
     cb(node);
 
-    Object.keys(node).forEach(function (key) {
+    Object.keys(node).forEach(function(key) {
       // Avoid visited nodes
-      if (key === 'parent' || ! node[key]) return;
+      if (key === 'parent' || !node[key]) { return; }
 
       node[key].parent = node;
       that.traverse(node[key], cb);
@@ -69,7 +69,7 @@ module.exports.prototype.traverse = function (node, cb) {
  * @param {String|Object} src - The source code or AST to traverse
  * @param {Function} cb - Called for every node
  */
-module.exports.prototype.walk = function (src, cb) {
+module.exports.prototype.walk = function(src, cb) {
   this.shouldStop = false;
 
   var ast = typeof src === 'object' ?
@@ -82,6 +82,6 @@ module.exports.prototype.walk = function (src, cb) {
 /**
  * Halts further traversal of the AST
  */
-module.exports.prototype.stopWalking = function () {
+module.exports.prototype.stopWalking = function() {
   this.shouldStop = true;
 };

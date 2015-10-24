@@ -4,7 +4,7 @@
   "description": "Execute a callback on every node of a source code's AST and stop walking when you see fit",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test/test.js"
+    "test": "jscs -p google index.js test && mocha test/test.js"
   },
   "repository": {
     "type": "git",
@@ -14,7 +14,10 @@
     "ast",
     "traversal",
     "acorn",
-    "static analysis"
+    "static analysis",
+    "source code",
+    "walker",
+    "jsx"
   ],
   "author": "Joel Kemp <joel@mrjoelkemp.com> (http://www.mrjoelkemp.com/)",
   "license": "MIT",
@@ -23,11 +26,12 @@
   },
   "homepage": "https://github.com/mrjoelkemp/node-source-walk",
   "dependencies": {
-    "acorn": "~2.0.4",
+    "acorn": "^2.0.4",
     "acorn-jsx": "^2.0.1",
     "object-assign": "^4.0.1"
   },
   "devDependencies": {
+    "jscs": "~2.4.0",
     "mocha": "~2.0.1",
     "sinon": "~1.12.2"
   }
