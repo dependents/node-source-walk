@@ -28,6 +28,13 @@ describe('node-source-walk', function() {
     });
   });
 
+  it('does not throw on ES7 async functions', function() {
+    var walker = new Walker();
+    assert.doesNotThrow(function() {
+      walker.walk('async function foo() {}', function() {});
+    });
+  });
+
   describe('walk', function() {
     var parseSpy, cb;
 
@@ -68,7 +75,7 @@ describe('node-source-walk', function() {
       walker.walk(ast, cb);
       var firstNode = cb.getCall(0).args[0];
       var secondNode = cb.getCall(1).args[0];
-      assert(secondNode.parent === firstNode.body);
+      assert(secondNode.parent === firstNode);
     });
   });
 

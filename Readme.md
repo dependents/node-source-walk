@@ -26,23 +26,26 @@ and simplification of [substack/node-falafel](https://github.com/substack/node-f
 
 ```
 
-By default, Walker will use `acorn` supporting ES6 (and JSX) and the `sourceType: module`, but you can change any of the defaults as follows:
+By default, Walker will use `babylon` (supporting ES6, JSX, Flow, and all other available babylon plugins) and the `sourceType: module`, but you can change any of the defaults as follows:
 
 ```js
 var walker = new Walker({
-  ecmaVersion: 5,
-  sourceType: 'script'
+  sourceType: 'script',
+  // If you don't like experimental plugins
+  plugins: [
+    'jsx',
+    'flow'
+  ]
 });
 ```
 
-* The supplied options are passed through to the parser, so you can configure it according
-to acorn's documentation: https://github.com/marijnh/acorn
+* The supplied options are passed through to the parser, so you can configure it according to babylon's documentation: https://github.com/babel/babylon
 
 ### Public Members
 
 `walk(src, cb)`
 
-* src: the contents of a file OR its AST (via Esprima or Acorn)
+* src: the contents of a file **OR** its (already parsed) AST
 * cb: a function that is called for every visited node
 
 `stopWalking()`

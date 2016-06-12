@@ -1,14 +1,27 @@
-var acorn = require('acorn-jsx/inject')(require('acorn'));
+var babylon = require('babylon');
 var assign = require('object-assign');
 
 /**
  * @param  {Object} options - Options to configure parser
- * @param  {Boolean} [options.ecmaVersion=5]
  */
 module.exports = function(options) {
   this.options = assign({
-    ecmaVersion: 6,
-    plugins: {jsx: true},
+    plugins: [
+      'jsx',
+      'flow',
+      'asyncFunctions',
+      'classConstructorCall',
+      'doExpressions',
+      'trailingFunctionCommas',
+      'objectRestSpread',
+      'decorators',
+      'classProperties',
+      'exportExtensions',
+      'exponentiationOperator',
+      'asyncGenerators',
+      'functionBind',
+      'functionSent'
+    ],
     sourceType: 'module'
   }, options);
 
@@ -28,7 +41,7 @@ module.exports.prototype.parse = function(src, options) {
     options.allowHashBang = true;
   }
 
-  return acorn.parse(src, options);
+  return babylon.parse(src, options);
 };
 
 /**
