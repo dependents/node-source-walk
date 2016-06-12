@@ -26,8 +26,7 @@
   },
   "homepage": "https://github.com/mrjoelkemp/node-source-walk",
   "dependencies": {
-    "acorn": "^2.0.4",
-    "acorn-jsx": "^2.0.1",
+    "babylon": "~6.8.1",
     "object-assign": "^4.0.1"
   },
   "devDependencies": {
