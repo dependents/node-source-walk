@@ -65,13 +65,13 @@ module.exports.prototype.traverse = function(node, cb) {
   } else if (node && typeof node === 'object') {
     cb(node);
 
-    Object.keys(node).forEach(function(key) {
+    for (var key in node) {
       // Avoid visited nodes
-      if (key === 'parent' || !node[key]) { return; }
+      if (key === 'parent' || !node[key]) { continue; }
 
       node[key].parent = node;
-      that.traverse(node[key], cb);
-    });
+      this.traverse(node[key], cb);
+    }
   }
 };
 
