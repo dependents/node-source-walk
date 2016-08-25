@@ -26,8 +26,7 @@
   },
   "homepage": "https://github.com/mrjoelkemp/node-source-walk",
   "dependencies": {
-    "babylon": "~6.8.1",
-    "object-assign": "^4.0.1"
+    "babylon": "~6.8.1"
   },
   "devDependencies": {
     "jscs": "~2.4.0",

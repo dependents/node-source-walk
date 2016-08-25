@@ -1,29 +1,28 @@
 var babylon = require('babylon');
-var assign = require('object-assign');
 
 /**
  * @param  {Object} options - Options to configure parser
  */
 module.exports = function(options) {
-  this.options = assign({
-    plugins: [
-      'jsx',
-      'flow',
-      'asyncFunctions',
-      'classConstructorCall',
-      'doExpressions',
-      'trailingFunctionCommas',
-      'objectRestSpread',
-      'decorators',
-      'classProperties',
-      'exportExtensions',
-      'exponentiationOperator',
-      'asyncGenerators',
-      'functionBind',
-      'functionSent'
-    ],
-    sourceType: 'module'
-  }, options);
+  this.options = options || {};
+  this.options.plugins = this.options.plugins || [
+    'jsx',
+    'flow',
+    'asyncFunctions',
+    'classConstructorCall',
+    'doExpressions',
+    'trailingFunctionCommas',
+    'objectRestSpread',
+    'decorators',
+    'classProperties',
+    'exportExtensions',
+    'exponentiationOperator',
+    'asyncGenerators',
+    'functionBind',
+    'functionSent'
+  ];
+
+  this.options.sourceType = this.options.sourceType || 'module';
 
   // We use global state to stop the recursive traversal of the AST
   this.shouldStop = false;
@@ -54,13 +53,14 @@ module.exports.prototype.traverse = function(node, cb) {
   if (this.shouldStop) { return; }
 
   if (Array.isArray(node)) {
-    node.forEach(function(x) {
+    for (var i = 0, l = node.length; i < l; i++) {
+      var x = node[i];
       if (x !== null) {
         // Mark that the node has been visited
         x.parent = node;
-        that.traverse(x, cb);
+        this.traverse(x, cb);
       }
-    });
+    }
 
   } else if (node && typeof node === 'object') {
     cb(node);
