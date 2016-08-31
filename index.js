@@ -48,8 +48,6 @@ module.exports.prototype.parse = function(src, options) {
  * Executes cb on a non-array AST node
  */
 module.exports.prototype.traverse = function(node, cb) {
-  var that = this;
-
   if (this.shouldStop) { return; }
 
   if (Array.isArray(node)) {
