@@ -41,6 +41,19 @@ var walker = new Walker({
 
 * The supplied options are passed through to the parser, so you can configure it according to babylon's documentation: https://github.com/babel/babylon
 
+### Swap out the parser
+
+If you want to supply your own parser, you can do:
+
+```js
+var walker = new Walker({
+  parser: mySweetParser
+});
+```
+
+* The custom parser must have a `.parse` method that takes in a string and returns an object/AST.
+* All of the other options supplied to the Walker constructor will be passed along as parser options to your chosen parser.
+
 ### Public Members
 
 `walk(src, cb)`
@@ -57,3 +70,8 @@ var walker = new Walker({
 
 * Allows you to traverse an AST node and execute a callback on it
 * Callback should expect the first argument to be an AST node, similar to `walk`'s callback.
+
+`parse(src)`
+
+* Uses the options supplied to Walker to parse the given source code string and return its AST
+using the configured parser (or babylon by default).

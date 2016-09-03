@@ -35,6 +35,33 @@ describe('node-source-walk', function() {
     });
   });
 
+  describe('when given a different parser', function() {
+    var walker, parser;
+
+    beforeEach(function() {
+      parser = {
+        parse: sinon.stub()
+      };
+
+      walker = new Walker({
+        parser: parser
+      });
+    });
+
+    it('uses it during a parse', function() {
+      walker.parse('1+1;');
+
+      assert.ok(parser.parse.called);
+    });
+
+    it('does not send it to the parser as an option', function() {
+      walker.parse('1+1;');
+
+      var parserOptions = parser.parse.args[0][1];
+      assert.ok(parserOptions.parser === undefined);
+    });
+  });
+
   describe('walk', function() {
     var parseSpy, cb;
 
@@ -108,6 +135,20 @@ describe('node-source-walk', function() {
         }
       });
       assert.equal(spy.callCount, 1);
+    });
+  });
+
+  describe('parse', function() {
+    describe('when no parser options are supplied', function() {
+      it('uses the defaults', function() {
+        var src = '1+1;';
+        var stub = sinon.stub(walker.parser, 'parse');
+
+        walker.parse(src);
+        assert.ok(stub.calledWith(src, walker.options));
+
+        stub.restore();
+      });
     });
   });
 });
