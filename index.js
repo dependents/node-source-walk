@@ -2,10 +2,19 @@ var babylon = require('babylon');
 
 /**
  * @param  {Object} options - Options to configure parser
+ * @param  {Object} options.parser - An object with a parse method that returns an AST
  */
 module.exports = function(options) {
-  this.options = options || {};
-  this.options.plugins = this.options.plugins || [
+  options = options || {};
+  this.parser = options.parser || babylon;
+
+  if (options.parser) {
+    // We don't want to send that down to the actual parser
+    delete options.parser;
+  }
+
+  this.options = options;
+  this.options.plugins = options.plugins || [
     'jsx',
     'flow',
     'asyncFunctions',
@@ -22,7 +31,8 @@ module.exports = function(options) {
     'functionSent'
   ];
 
-  this.options.sourceType = this.options.sourceType || 'module';
+  this.options.allowHashBang = options.allowHashBang || true;
+  this.options.sourceType = options.sourceType || 'module';
 
   // We use global state to stop the recursive traversal of the AST
   this.shouldStop = false;
@@ -34,13 +44,14 @@ module.exports = function(options) {
  * @return {Object} The AST of the given src
  */
 module.exports.prototype.parse = function(src, options) {
-  options = options || {};
+  options = options || this.options;
 
+  // Keep around for consumers of parse that supply their own options
   if (typeof options.allowHashBang === 'undefined') {
     options.allowHashBang = true;
   }
 
-  return babylon.parse(src, options);
+  return this.parser.parse(src, options);
 };
 
 /**
@@ -83,9 +94,7 @@ module.exports.prototype.traverse = function(node, cb) {
 module.exports.prototype.walk = function(src, cb) {
   this.shouldStop = false;
 
-  var ast = typeof src === 'object' ?
-            src :
-            this.parse(src, this.options);
+  var ast = typeof src === 'object' ? src : this.parse(src);
 
   this.traverse(ast, cb);
 };
