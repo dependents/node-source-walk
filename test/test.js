@@ -4,7 +4,9 @@ var fs = require('fs');
 var sinon = require('sinon');
 
 describe('node-source-walk', function() {
-  var walker, ast, src;
+  var walker;
+  var ast;
+  var src;
 
   beforeEach(function() {
     walker = new Walker();
@@ -15,6 +17,7 @@ describe('node-source-walk', function() {
   it('does not fail on binary scripts with a hashbang', function() {
     var walker = new Walker();
     var src = fs.readFileSync(__dirname + '/example/hashbang.js', 'utf8');
+
     assert.doesNotThrow(function() {
       var ast = walker.parse(src);
     });
@@ -36,7 +39,8 @@ describe('node-source-walk', function() {
   });
 
   describe('when given a different parser', function() {
-    var walker, parser;
+    var walker;
+    var parser;
 
     beforeEach(function() {
       parser = {
@@ -63,7 +67,8 @@ describe('node-source-walk', function() {
   });
 
   describe('walk', function() {
-    var parseSpy, cb;
+    var parseSpy;
+    var cb;
 
     beforeEach(function() {
       parseSpy = sinon.stub(walker, 'parse');
@@ -96,8 +101,113 @@ describe('node-source-walk', function() {
     });
   });
 
+  describe('moonwalk', function() {
+    it('throws if not given a valid object', function() {
+      assert.throws(function() {
+        walker.moonwalk('yo', cb);
+      }, Error, 'node must be an object');
+    });
+
+    it('visits the parent of the given node', function() {
+      var parent = {};
+      var child = {
+        type: 'ExpressionStatement',
+        parent: parent
+      };
+
+      walker.moonwalk(child, function(node) {
+        assert.deepEqual(node, parent);
+        walker.stopWalking();
+      });
+    });
+
+    it('stops traversing upwards when there are no more parents', function() {
+      var spy = sinon.spy();
+
+      var parent = {};
+      var child = {
+        type: 'ExpressionStatement',
+        parent: parent
+      };
+
+      walker.moonwalk(child, spy);
+      assert.equal(spy.callCount, 1);
+    });
+
+    it('handles more than one level of nesting', function() {
+      var spy = sinon.spy();
+      var grandParent = {};
+      var parent = {
+        parent: grandParent
+      };
+      var child = {
+        type: 'ExpressionStatement',
+        parent: parent
+      };
+
+      walker.moonwalk(child, spy);
+
+      assert.equal(spy.callCount, 2);
+    });
+
+    describe('when given a node that does not have a parent', function() {
+      it('does not continue', function() {
+        var spy = sinon.spy();
+        var child = {
+          type: 'ExpressionStatement'
+        };
+
+        walker.moonwalk(child, spy);
+        assert.ok(!spy.called);
+      });
+    });
+
+    describe('when told to stop walking', function() {
+      it('does not continue', function() {
+        var spy = sinon.spy();
+        var grandParent = {};
+        var parent = {
+          parent: grandParent
+        };
+        var child = {
+          type: 'ExpressionStatement',
+          parent: parent
+        };
+
+        walker.moonwalk(child, function() {
+          spy();
+          walker.stopWalking();
+        });
+
+        assert.equal(spy.callCount, 1);
+      });
+    });
+
+    describe('when the parent is a list of children', function() {
+      it('calls the callback for each of the parent elements', function() {
+        var spy = sinon.spy();
+        var grandParent = {};
+        var parent = [
+          {
+            type: 'ExpressionStatement'
+          }
+        ];
+        parent.parent = grandParent;
+
+        var child = {
+          type: 'ExpressionStatement',
+          parent: parent
+        };
+
+        walker.moonwalk(child, spy);
+
+        assert.equal(spy.callCount, 2);
+      });
+    });
+  });
+
   describe('traverse', function() {
-    it ('creates a parent reference for each node', function() {
+    it('creates a parent reference for each node', function() {
       var cb = sinon.spy();
       walker.walk(ast, cb);
       var firstNode = cb.getCall(0).args[0];
@@ -113,22 +223,23 @@ describe('node-source-walk', function() {
       walker.walk(ast, function() {
         spy();
         walker.stopWalking();
-      })
+      });
 
       assert(spy.calledOnce);
     });
   });
 
-  describe('jsx', function () {
-    var spy, walker;
+  describe('jsx', function() {
+    var spy;
+    var walker;
 
-    beforeEach(function () {
+    beforeEach(function() {
       spy = sinon.spy();
       walker = new Walker();
     });
 
-    it('parse', function () {
-      walker.walk('<jsx />', function (node) {
+    it('parse', function() {
+      walker.walk('<jsx />', function(node) {
         if (node.type === 'JSXIdentifier') {
           spy();
           assert.equal(node.name, 'jsx');

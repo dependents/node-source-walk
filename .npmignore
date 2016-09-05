@@ -1,4 +1,5 @@
 test
 .gitignore
 .travis.yml
+.jscsrc
 Readme.md
