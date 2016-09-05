@@ -99,6 +99,30 @@ module.exports.prototype.walk = function(src, cb) {
   this.traverse(ast, cb);
 };
 
+module.exports.prototype.moonwalk = function(node, cb) {
+  this.shouldStop = false;
+
+  if (typeof node !== 'object') {
+    throw new Error('node must be an object');
+  }
+
+  reverseTraverse.call(this, node, cb);
+};
+
+function reverseTraverse(node, cb) {
+  if (this.shouldStop || !node.parent) { return; }
+
+  if (node.parent instanceof Array) {
+    for (var i = 0, l = node.parent.length; i < l; i++) {
+      cb(node.parent[i]);
+    }
+  } else {
+    cb(node.parent);
+  }
+
+  reverseTraverse.call(this, node.parent, cb);
+}
+
 /**
  * Halts further traversal of the AST
  */

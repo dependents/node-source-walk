@@ -1,11 +1,8 @@
 ### node-source-walk [![npm](http://img.shields.io/npm/v/node-source-walk.svg)](https://npmjs.org/package/node-source-walk) [![npm](http://img.shields.io/npm/dm/node-source-walk.svg)](https://npmjs.org/package/node-source-walk)
 
-> Execute a callback on every node of a file's AST and stop walking whenever you see fit.
+> Synchronously execute a callback on every node of a file's AST and stop walking whenever you see fit.
 
-*A variation of [substack/node-detective](https://github.com/substack/node-detective)
-and simplification of [substack/node-falafel](https://github.com/substack/node-falafel).*
-
-`npm install node-source-walk`
+`npm install --save node-source-walk`
 
 ### Usage
 
@@ -17,8 +14,8 @@ and simplification of [substack/node-falafel](https://github.com/substack/node-f
   // Assume src is the string contents of myfile.js
   // or the AST of an outside parse of myfile.js
 
-  walker.walk(src, function (node) {
-    if (/* some condition */) {
+  walker.walk(src, function(node) {
+    if (node.type === whateverImLookingFor) {
       // No need to keep traversing since we found what we wanted
       walker.stopWalking();
     }
@@ -58,13 +55,22 @@ var walker = new Walker({
 
 `walk(src, cb)`
 
-* src: the contents of a file **OR** its (already parsed) AST
-* cb: a function that is called for every visited node
+* Recursively walks the given `src` from top to bottom
+* `src`: the contents of a file **OR** its (already parsed) AST
+* `cb`: a function that is called for every visited node.
+ * The argument passed to `cb` will be the currently visited node.
+
+`moonwalk(node, cb)`
+
+* Recursively walks up an AST starting from the given node. This is a traversal that's in the opposite direction of `walk` and `traverse`.
+* `node`: a valid AST node
+* `cb`: a function that is called for every node (specifically via visiting the parent(s) of every node recursively).
+ * The argument passed to `cb` will be the currently visited node.
 
 `stopWalking()`
 
-* Halts further walking of the AST until another manual call of `walk`.
-* This is super-beneficial when dealing with large source files
+* Halts further walking of the AST until another manual call of `walk` or `moonwalk`.
+* This is super-beneficial when dealing with large source files (or ASTs)
 
 `traverse(node, cb)`
 
@@ -75,3 +81,7 @@ var walker = new Walker({
 
 * Uses the options supplied to Walker to parse the given source code string and return its AST
 using the configured parser (or babylon by default).
+
+## License
+
+MIT
