@@ -238,7 +238,7 @@ describe('node-source-walk', function() {
       walker = new Walker();
     });
 
-    it('parse', function() {
+    it('parses', function() {
       walker.walk('<jsx />', function(node) {
         if (node.type === 'JSXIdentifier') {
           spy();
@@ -246,6 +246,14 @@ describe('node-source-walk', function() {
         }
       });
       assert.equal(spy.callCount, 1);
+    });
+  });
+
+  describe('flow type imports', function() {
+    it('parses', function() {
+      assert.doesNotThrow(function() {
+        walker.parse('import { Something, type SomethingElse } from "someModule";');
+      });
     });
   });
 
