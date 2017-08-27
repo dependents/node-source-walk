@@ -38,6 +38,13 @@ describe('node-source-walk', function() {
     });
   });
 
+  it('does not throw on dynamic imports', function() {
+    var walker = new Walker();
+    assert.doesNotThrow(function() {
+      walker.walk('import("foo").then(foo => foo());', function() {});
+    });
+  });
+
   describe('when given a different parser', function() {
     var walker;
     var parser;
