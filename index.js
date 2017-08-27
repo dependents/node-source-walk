@@ -28,7 +28,8 @@ module.exports = function(options) {
     'exponentiationOperator',
     'asyncGenerators',
     'functionBind',
-    'functionSent'
+    'functionSent',
+    'dynamicImport'
   ];
 
   this.options.allowHashBang = options.allowHashBang || true;
