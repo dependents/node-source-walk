@@ -28,6 +28,9 @@
   "dependencies": {
     "babylon": "^6.17.0"
   },
+  "engines": {
+    "node": ">=6.0"
+  },
   "devDependencies": {
     "jscs": "~2.4.0",
     "jscs-preset-mrjoelkemp": "~1.0.0",
