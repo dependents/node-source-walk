@@ -1,4 +1,4 @@
-var babylon = require('babylon');
+var parser = require('@babel/parser');
 
 /**
  * @param  {Object} options - Options to configure parser
@@ -6,7 +6,7 @@ var babylon = require('babylon');
  */
 module.exports = function(options) {
   options = options || {};
-  this.parser = options.parser || babylon;
+  this.parser = options.parser || parser;
 
   if (options.parser) {
     // We don't want to send that down to the actual parser
@@ -17,15 +17,12 @@ module.exports = function(options) {
   this.options.plugins = options.plugins || [
     'jsx',
     'flow',
-    'asyncFunctions',
-    'classConstructorCall',
     'doExpressions',
-    'trailingFunctionCommas',
     'objectRestSpread',
-    'decorators',
+    ['decorators', {decoratorsBeforeExport: false}],
     'classProperties',
-    'exportExtensions',
-    'exponentiationOperator',
+    'exportDefaultFrom',
+    'exportNamespaceFrom',
     'asyncGenerators',
     'functionBind',
     'functionSent',
