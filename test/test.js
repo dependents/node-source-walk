@@ -1,12 +1,12 @@
-var assert = require('assert');
-var Walker = require('../');
-var fs = require('fs');
-var sinon = require('sinon');
+const assert = require('assert');
+const Walker = require('../');
+const fs = require('fs');
+const sinon = require('sinon');
 
 describe('node-source-walk', function() {
-  var walker;
-  var ast;
-  var src;
+  let walker;
+  let ast;
+  let src;
 
   beforeEach(function() {
     walker = new Walker();
@@ -15,16 +15,16 @@ describe('node-source-walk', function() {
   });
 
   it('does not fail on binary scripts with a hashbang', function() {
-    var walker = new Walker();
-    var src = fs.readFileSync(__dirname + '/example/hashbang.js', 'utf8');
+    const walker = new Walker();
+    const src = fs.readFileSync(__dirname + '/example/hashbang.js', 'utf8');
 
     assert.doesNotThrow(function() {
-      var ast = walker.parse(src);
+      const ast = walker.parse(src);
     });
   });
 
   it('parses es6 by default', function() {
-    var walker = new Walker();
+    const walker = new Walker();
     assert.doesNotThrow(function() {
       walker.walk('() => console.log("foo")', function() {});
       walker.walk('import {foo} from "bar";', function() {});
@@ -32,22 +32,22 @@ describe('node-source-walk', function() {
   });
 
   it('does not throw on ES7 async functions', function() {
-    var walker = new Walker();
+    const walker = new Walker();
     assert.doesNotThrow(function() {
       walker.walk('async function foo() {}', function() {});
     });
   });
 
   it('does not throw on dynamic imports', function() {
-    var walker = new Walker();
+    const walker = new Walker();
     assert.doesNotThrow(function() {
       walker.walk('import("foo").then(foo => foo());', function() {});
     });
   });
 
   describe('when given a different parser', function() {
-    var walker;
-    var parser;
+    let walker;
+    let parser;
 
     beforeEach(function() {
       parser = {
@@ -68,14 +68,14 @@ describe('node-source-walk', function() {
     it('does not send it to the parser as an option', function() {
       walker.parse('1+1;');
 
-      var parserOptions = parser.parse.args[0][1];
+      const parserOptions = parser.parse.args[0][1];
       assert.ok(parserOptions.parser === undefined);
     });
   });
 
   describe('walk', function() {
-    var parseSpy;
-    var cb;
+    let parseSpy;
+    let cb;
 
     beforeEach(function() {
       parseSpy = sinon.stub(walker, 'parse');
@@ -96,7 +96,7 @@ describe('node-source-walk', function() {
     it('calls the given callback for each node in the ast', function() {
       walker.walk(ast, cb);
       assert(cb.called);
-      var node = cb.getCall(0).args[0];
+      const node = cb.getCall(0).args[0];
       assert(typeof node === 'object');
     });
 
@@ -116,8 +116,8 @@ describe('node-source-walk', function() {
     });
 
     it('visits the parent of the given node', function() {
-      var parent = {};
-      var child = {
+      const parent = {};
+      const child = {
         type: 'ExpressionStatement',
         parent: parent
       };
@@ -129,10 +129,10 @@ describe('node-source-walk', function() {
     });
 
     it('stops traversing upwards when there are no more parents', function() {
-      var spy = sinon.spy();
+      const spy = sinon.spy();
 
-      var parent = {};
-      var child = {
+      const parent = {};
+      const child = {
         type: 'ExpressionStatement',
         parent: parent
       };
@@ -142,12 +142,12 @@ describe('node-source-walk', function() {
     });
 
     it('handles more than one level of nesting', function() {
-      var spy = sinon.spy();
-      var grandParent = {};
-      var parent = {
+      const spy = sinon.spy();
+      const grandParent = {};
+      const parent = {
         parent: grandParent
       };
-      var child = {
+      const child = {
         type: 'ExpressionStatement',
         parent: parent
       };
@@ -159,8 +159,8 @@ describe('node-source-walk', function() {
 
     describe('when given a node that does not have a parent', function() {
       it('does not continue', function() {
-        var spy = sinon.spy();
-        var child = {
+        const spy = sinon.spy();
+        const child = {
           type: 'ExpressionStatement'
         };
 
@@ -171,12 +171,12 @@ describe('node-source-walk', function() {
 
     describe('when told to stop walking', function() {
       it('does not continue', function() {
-        var spy = sinon.spy();
-        var grandParent = {};
-        var parent = {
+        const spy = sinon.spy();
+        const grandParent = {};
+        const parent = {
           parent: grandParent
         };
-        var child = {
+        const child = {
           type: 'ExpressionStatement',
           parent: parent
         };
@@ -192,16 +192,16 @@ describe('node-source-walk', function() {
 
     describe('when the parent is a list of children', function() {
       it('calls the callback for each of the parent elements', function() {
-        var spy = sinon.spy();
-        var grandParent = {};
-        var parent = [
+        const spy = sinon.spy();
+        const grandParent = {};
+        const parent = [
           {
             type: 'ExpressionStatement'
           }
         ];
         parent.parent = grandParent;
 
-        var child = {
+        const child = {
           type: 'ExpressionStatement',
           parent: parent
         };
@@ -215,17 +215,17 @@ describe('node-source-walk', function() {
 
   describe('traverse', function() {
     it('creates a parent reference for each node', function() {
-      var cb = sinon.spy();
+      const cb = sinon.spy();
       walker.walk(ast, cb);
-      var firstNode = cb.getCall(0).args[0];
-      var secondNode = cb.getCall(1).args[0];
+      const firstNode = cb.getCall(0).args[0];
+      const secondNode = cb.getCall(1).args[0];
       assert(secondNode.parent === firstNode);
     });
   });
 
   describe('stopWalking', function() {
     it('halts further traversal of the AST', function() {
-      var spy = sinon.spy();
+      const spy = sinon.spy();
 
       walker.walk(ast, function() {
         spy();
@@ -237,8 +237,8 @@ describe('node-source-walk', function() {
   });
 
   describe('jsx', function() {
-    var spy;
-    var walker;
+    let spy;
+    let walker;
 
     beforeEach(function() {
       spy = sinon.spy();
@@ -267,8 +267,8 @@ describe('node-source-walk', function() {
   describe('parse', function() {
     describe('when no parser options are supplied', function() {
       it('uses the defaults', function() {
-        var src = '1+1;';
-        var stub = sinon.stub(walker.parser, 'parse');
+        const src = '1+1;';
+        const stub = sinon.stub(walker.parser, 'parse');
 
         walker.parse(src);
         assert.ok(stub.calledWith(src, walker.options));
