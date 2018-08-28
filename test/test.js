@@ -84,7 +84,7 @@ describe('node-source-walk', function() {
 
     afterEach(function() {
       parseSpy.restore();
-      cb.reset();
+      cb.resetHistory();
     });
 
     it('parses the given source code', function() {
