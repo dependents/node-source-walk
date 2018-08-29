@@ -1,39 +1,35 @@
-var babylon = require('babylon');
+const parser = require('@babel/parser');
 
 /**
  * @param  {Object} options - Options to configure parser
  * @param  {Object} options.parser - An object with a parse method that returns an AST
  */
-module.exports = function(options) {
-  options = options || {};
-  this.parser = options.parser || babylon;
+module.exports = function(options = {}) {
+  this.parser = options.parser || parser;
 
   if (options.parser) {
     // We don't want to send that down to the actual parser
     delete options.parser;
   }
 
-  this.options = options;
-  this.options.plugins = options.plugins || [
-    'jsx',
-    'flow',
-    'asyncFunctions',
-    'classConstructorCall',
-    'doExpressions',
-    'trailingFunctionCommas',
-    'objectRestSpread',
-    'decorators',
-    'classProperties',
-    'exportExtensions',
-    'exponentiationOperator',
-    'asyncGenerators',
-    'functionBind',
-    'functionSent',
-    'dynamicImport'
-  ];
-
-  this.options.allowHashBang = options.allowHashBang || true;
-  this.options.sourceType = options.sourceType || 'module';
+  this.options = Object.assign({
+    plugins: [
+      'jsx',
+      'flow',
+      'doExpressions',
+      'objectRestSpread',
+      ['decorators', {decoratorsBeforeExport: false}],
+      'classProperties',
+      'exportDefaultFrom',
+      'exportNamespaceFrom',
+      'asyncGenerators',
+      'functionBind',
+      'functionSent',
+      'dynamicImport'
+    ],
+    allowHashBang: true,
+    sourceType: 'module'
+  }, options);
 
   // We use global state to stop the recursive traversal of the AST
   this.shouldStop = false;
@@ -63,8 +59,8 @@ module.exports.prototype.traverse = function(node, cb) {
   if (this.shouldStop) { return; }
 
   if (Array.isArray(node)) {
-    for (var i = 0, l = node.length; i < l; i++) {
-      var x = node[i];
+    for (let i = 0, l = node.length; i < l; i++) {
+      const x = node[i];
       if (x !== null) {
         // Mark that the node has been visited
         x.parent = node;
@@ -75,7 +71,7 @@ module.exports.prototype.traverse = function(node, cb) {
   } else if (node && typeof node === 'object') {
     cb(node);
 
-    for (var key in node) {
+    for (let key in node) {
       // Avoid visited nodes
       if (key === 'parent' || !node[key]) { continue; }
 
@@ -95,7 +91,7 @@ module.exports.prototype.traverse = function(node, cb) {
 module.exports.prototype.walk = function(src, cb) {
   this.shouldStop = false;
 
-  var ast = typeof src === 'object' ? src : this.parse(src);
+  const ast = typeof src === 'object' ? src : this.parse(src);
 
   this.traverse(ast, cb);
 };
@@ -114,7 +110,7 @@ function reverseTraverse(node, cb) {
   if (this.shouldStop || !node.parent) { return; }
 
   if (node.parent instanceof Array) {
-    for (var i = 0, l = node.parent.length; i < l; i++) {
+    for (let i = 0, l = node.parent.length; i < l; i++) {
       cb(node.parent[i]);
     }
   } else {

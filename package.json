@@ -26,12 +26,15 @@
   },
   "homepage": "https://github.com/mrjoelkemp/node-source-walk",
   "dependencies": {
-    "babylon": "^6.17.0"
+    "@babel/parser": "^7.0.0"
+  },
+  "engines": {
+    "node": ">=6.0"
   },
   "devDependencies": {
     "jscs": "~2.4.0",
     "jscs-preset-mrjoelkemp": "~1.0.0",
-    "mocha": "~2.2.5",
-    "sinon": "~1.17.4"
+    "mocha": "^5.2.0",
+    "sinon": "^6.1.5"
   }
 }
