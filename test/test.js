@@ -45,6 +45,13 @@ describe('node-source-walk', function() {
     });
   });
 
+  it('does not throw when hitting a decorator before an export', function() {
+    const walker = new Walker();
+    assert.doesNotThrow(function() {
+      walker.walk('@decorator\nexport class Foo {}', function() {});
+    });
+  });
+
   describe('when given a different parser', function() {
     let walker;
     let parser;
