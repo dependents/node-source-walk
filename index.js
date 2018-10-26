@@ -18,7 +18,7 @@ module.exports = function(options = {}) {
       'flow',
       'doExpressions',
       'objectRestSpread',
-      ['decorators', {decoratorsBeforeExport: false}],
+      ['decorators', {decoratorsBeforeExport: true}],
       'classProperties',
       'exportDefaultFrom',
       'exportNamespaceFrom',
