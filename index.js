@@ -25,7 +25,8 @@ module.exports = function(options = {}) {
       'asyncGenerators',
       'functionBind',
       'functionSent',
-      'dynamicImport'
+      'dynamicImport',
+      'optionalChaining'
     ],
     allowHashBang: true,
     sourceType: 'module'
