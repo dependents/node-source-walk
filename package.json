@@ -4,7 +4,7 @@
   "description": "Execute a callback on every node of a source code's AST and stop walking when you see fit",
   "main": "index.js",
   "scripts": {
-    "test": "jscs index.js test && mocha test/test.js"
+    "test": "eslint index.js \"test/*.js\" && mocha test/test.js"
   },
   "repository": {
     "type": "git",
@@ -32,9 +32,8 @@
     "node": ">=6.0"
   },
   "devDependencies": {
-    "jscs": "~2.4.0",
-    "jscs-preset-mrjoelkemp": "~1.0.0",
+    "eslint": "^5.16.0",
     "mocha": "^5.2.0",
-    "sinon": "^6.1.5"
+    "sinon": "^6.3.5"
   }
 }
