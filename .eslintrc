@@ -1,8 +1,10 @@
 {
   "extends": "eslint:recommended",
+  "parserOptions": {
+    "ecmaVersion": 2019
+  },
   "env": {
-    "node": true,
-    "es6": true
+    "node": true
   },
   "rules": {
     "strict": "error"

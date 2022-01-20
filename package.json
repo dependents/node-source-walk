@@ -31,14 +31,14 @@
   },
   "homepage": "https://github.com/dependents/node-source-walk",
   "engines": {
-    "node": ">=6.0"
+    "node": ">=12"
   },
   "dependencies": {
     "@babel/parser": "^7.0.0"
   },
   "devDependencies": {
-    "eslint": "^5.16.0",
-    "mocha": "^6.2.3",
-    "sinon": "^7.5.0"
+    "eslint": "^8.9.0",
+    "mocha": "^9.2.0",
+    "sinon": "^13.0.1"
   }
 }
