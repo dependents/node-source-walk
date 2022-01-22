@@ -1,3 +1,5 @@
+/* eslint-env mocha */
+
 const assert = require('assert');
 const Walker = require('../');
 const fs = require('fs');
@@ -19,7 +21,7 @@ describe('node-source-walk', function() {
     const src = fs.readFileSync(__dirname + '/example/hashbang.js', 'utf8');
 
     assert.doesNotThrow(function() {
-      const ast = walker.parse(src);
+      walker.parse(src);
     });
   });
 
@@ -117,6 +119,7 @@ describe('node-source-walk', function() {
 
   describe('moonwalk', function() {
     it('throws if not given a valid object', function() {
+      const cb = sinon.spy();
       assert.throws(function() {
         walker.moonwalk('yo', cb);
       }, Error, 'node must be an object');
