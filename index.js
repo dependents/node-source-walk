@@ -1,3 +1,5 @@
+'use strict';
+
 const parser = require('@babel/parser');
 
 /**
@@ -77,7 +79,10 @@ module.exports.prototype.traverse = function(node, cb) {
       // Avoid visited nodes
       if (key === 'parent' || !node[key]) { continue; }
 
-      node[key].parent = node;
+      if (typeof node[key] === 'object') {
+        node[key].parent = node;
+      }
+
       this.traverse(node[key], cb);
     }
   }
