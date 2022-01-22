@@ -16,18 +16,22 @@ module.exports = function(options = {}) {
     plugins: [
       'jsx',
       'flow',
-      'doExpressions',
-      'objectRestSpread',
-      ['decorators', {decoratorsBeforeExport: true}],
+      'asyncGenerators',
       'classProperties',
+      'doExpressions',
+      'dynamicImport',
       'exportDefaultFrom',
       'exportNamespaceFrom',
-      'asyncGenerators',
       'functionBind',
       'functionSent',
-      'dynamicImport',
-      'optionalChaining',
-      'nullishCoalescingOperator'
+      'nullishCoalescingOperator',
+      'objectRestSpread',
+      [
+        'decorators', {
+          decoratorsBeforeExport: true
+        }
+      ],
+      'optionalChaining'
     ],
     allowHashBang: true,
     sourceType: 'module'
@@ -58,24 +62,23 @@ module.exports.prototype.parse = function(src, options) {
  * Executes cb on a non-array AST node
  */
 module.exports.prototype.traverse = function(node, cb) {
-  if (this.shouldStop) { return; }
+  if (this.shouldStop) return;
 
   if (Array.isArray(node)) {
-    for (let i = 0, l = node.length; i < l; i++) {
-      const x = node[i];
-      if (x !== null) {
+    for (const key of node) {
+      if (key !== null) {
         // Mark that the node has been visited
-        x.parent = node;
-        this.traverse(x, cb);
+        key.parent = node;
+        this.traverse(key, cb);
       }
     }
-
   } else if (node && typeof node === 'object') {
     cb(node);
 
-    for (let key in node) {
+    // TODO switch to Object.entries
+    for (const key of Object.keys(node)) {
       // Avoid visited nodes
-      if (key === 'parent' || !node[key]) { continue; }
+      if (key === 'parent' || !node[key]) continue;
 
       node[key].parent = node;
       this.traverse(node[key], cb);
@@ -109,11 +112,11 @@ module.exports.prototype.moonwalk = function(node, cb) {
 };
 
 function reverseTraverse(node, cb) {
-  if (this.shouldStop || !node.parent) { return; }
+  if (this.shouldStop || !node.parent) return;
 
-  if (node.parent instanceof Array) {
-    for (let i = 0, l = node.parent.length; i < l; i++) {
-      cb(node.parent[i]);
+  if (Array.isArray(node.parent)) {
+    for (const parent of node.parent) {
+      cb(parent);
     }
   } else {
     cb(node.parent);
