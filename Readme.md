@@ -2,31 +2,31 @@
 
 > Synchronously execute a callback on every node of a file's AST and stop walking whenever you see fit.
 
-`npm install --save node-source-walk`
+```sh
+npm install node-source-walk
+```
 
 ### Usage
 
-```javascript
-  var Walker = require('node-source-walk');
+```js
+const Walker = require('node-source-walk');
 
-  var walker = new Walker();
+const walker = new Walker();
 
-  // Assume src is the string contents of myfile.js
-  // or the AST of an outside parse of myfile.js
-
-  walker.walk(src, function(node) {
-    if (node.type === whateverImLookingFor) {
-      // No need to keep traversing since we found what we wanted
-      walker.stopWalking();
-    }
-  });
-
+// Assume src is the string contents of myfile.js
+// or the AST of an outside parse of myfile.js
+walker.walk(src, (node) => {
+  if (node.type === whateverImLookingFor) {
+    // No need to keep traversing since we found what we wanted
+    walker.stopWalking();
+  }
+});
 ```
 
 By default, Walker will use `@babel/parser` (supporting ES6, JSX, Flow, and all other available @babel/parser plugins) and the `sourceType: module`, but you can change any of the defaults as follows:
 
 ```js
-var walker = new Walker({
+const walker = new Walker({
   sourceType: 'script',
   // If you don't like experimental plugins
   plugins: [
@@ -43,7 +43,7 @@ var walker = new Walker({
 If you want to supply your own parser, you can do:
 
 ```js
-var walker = new Walker({
+const walker = new Walker({
   parser: mySweetParser
 });
 ```

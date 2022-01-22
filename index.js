@@ -14,26 +14,31 @@ module.exports = function(options = {}) {
     delete options.parser;
   }
 
-  this.options = Object.assign({
+  this.options = {
     plugins: [
       'jsx',
       'flow',
-      'doExpressions',
-      'objectRestSpread',
-      ['decorators', {decoratorsBeforeExport: true}],
+      'asyncGenerators',
       'classProperties',
+      'doExpressions',
+      'dynamicImport',
       'exportDefaultFrom',
       'exportNamespaceFrom',
-      'asyncGenerators',
       'functionBind',
       'functionSent',
-      'dynamicImport',
-      'optionalChaining',
-      'nullishCoalescingOperator'
+      'nullishCoalescingOperator',
+      'objectRestSpread',
+      [
+        'decorators', {
+          decoratorsBeforeExport: true
+        }
+      ],
+      'optionalChaining'
     ],
     allowHashBang: true,
-    sourceType: 'module'
-  }, options);
+    sourceType: 'module',
+    ...options
+  };
 
   // We use global state to stop the recursive traversal of the AST
   this.shouldStop = false;
@@ -44,9 +49,7 @@ module.exports = function(options = {}) {
  * @param  {Object} [options] - Parser options
  * @return {Object} The AST of the given src
  */
-module.exports.prototype.parse = function(src, options) {
-  options = options || this.options;
-
+module.exports.prototype.parse = function(src, options = this.options) {
   // Keep around for consumers of parse that supply their own options
   if (typeof options.allowHashBang === 'undefined') {
     options.allowHashBang = true;
@@ -60,30 +63,28 @@ module.exports.prototype.parse = function(src, options) {
  * Executes cb on a non-array AST node
  */
 module.exports.prototype.traverse = function(node, cb) {
-  if (this.shouldStop) { return; }
+  if (this.shouldStop) return;
 
   if (Array.isArray(node)) {
-    for (let i = 0, l = node.length; i < l; i++) {
-      const x = node[i];
-      if (x !== null) {
+    for (const key of node) {
+      if (key !== null) {
         // Mark that the node has been visited
-        x.parent = node;
-        this.traverse(x, cb);
+        key.parent = node;
+        this.traverse(key, cb);
       }
     }
-
   } else if (node && typeof node === 'object') {
     cb(node);
 
-    for (let key in node) {
+    for (const [key, value] of Object.entries(node)) {
       // Avoid visited nodes
-      if (key === 'parent' || !node[key]) { continue; }
+      if (key === 'parent' || !value) continue;
 
-      if (typeof node[key] === 'object') {
-        node[key].parent = node;
+      if (typeof value === 'object') {
+        value.parent = node;
       }
 
-      this.traverse(node[key], cb);
+      this.traverse(value, cb);
     }
   }
 };
@@ -114,11 +115,11 @@ module.exports.prototype.moonwalk = function(node, cb) {
 };
 
 function reverseTraverse(node, cb) {
-  if (this.shouldStop || !node.parent) { return; }
+  if (this.shouldStop || !node.parent) return;
 
-  if (node.parent instanceof Array) {
-    for (let i = 0, l = node.parent.length; i < l; i++) {
-      cb(node.parent[i]);
+  if (Array.isArray(node.parent)) {
+    for (const parent of node.parent) {
+      cb(parent);
     }
   } else {
     cb(node.parent);
