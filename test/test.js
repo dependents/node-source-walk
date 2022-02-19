@@ -1,7 +1,5 @@
 /* eslint-env mocha */
 
-'use strict';
-
 const assert = require('assert');
 const Walker = require('../');
 const fs = require('fs');
