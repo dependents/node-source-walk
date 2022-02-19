@@ -1,4 +1,4 @@
-### node-source-walk [![npm](http://img.shields.io/npm/v/node-source-walk.svg)](https://npmjs.org/package/node-source-walk) [![npm](http://img.shields.io/npm/dm/node-source-walk.svg)](https://npmjs.org/package/node-source-walk)
+### node-source-walk [![CI](https://github.com/dependents/node-source-walk/actions/workflows/ci.yml/badge.svg)](https://github.com/dependents/node-source-walk/actions/workflows/ci.yml) [![npm](https://img.shields.io/npm/v/node-source-walk)](https://www.npmjs.com/package/node-source-walk) [![npm](https://img.shields.io/npm/dm/node-source-walk)](https://www.npmjs.com/package/node-source-walk)
 
 > Synchronously execute a callback on every node of a file's AST and stop walking whenever you see fit.
 
@@ -23,7 +23,7 @@
 
 ```
 
-By default, Walker will use `babylon` (supporting ES6, JSX, Flow, and all other available babylon plugins) and the `sourceType: module`, but you can change any of the defaults as follows:
+By default, Walker will use `@babel/parser` (supporting ES6, JSX, Flow, and all other available @babel/parser plugins) and the `sourceType: module`, but you can change any of the defaults as follows:
 
 ```js
 var walker = new Walker({
