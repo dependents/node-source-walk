@@ -2,6 +2,10 @@
 
 const parser = require('@babel/parser');
 
+function isObject(str) {
+  return typeof str === 'object' && !Array.isArray(str) && str !== null;
+}
+
 /**
  * @param  {Object} options - Options to configure parser
  * @param  {Object} options.parser - An object with a parse method that returns an AST
@@ -68,13 +72,13 @@ module.exports.prototype.traverse = function(node, cb) {
 
   if (Array.isArray(node)) {
     for (const key of node) {
-      if (key !== null && typeof key === 'object') {
+      if (isObject(key)) {
         // Mark that the node has been visited
         key.parent = node;
         this.traverse(key, cb);
       }
     }
-  } else if (node && typeof node === 'object') {
+  } else if (node && isObject(node)) {
     cb(node);
 
     // TODO switch to Object.entries
@@ -82,7 +86,7 @@ module.exports.prototype.traverse = function(node, cb) {
       // Avoid visited nodes
       if (key === 'parent' || !node[key]) continue;
 
-      if (typeof node[key] === 'object') {
+      if (isObject(node[key])) {
         node[key].parent = node;
       }
 
@@ -101,7 +105,7 @@ module.exports.prototype.traverse = function(node, cb) {
 module.exports.prototype.walk = function(src, cb) {
   this.shouldStop = false;
 
-  const ast = typeof src === 'object' ? src : this.parse(src);
+  const ast = isObject(src) ? src : this.parse(src);
 
   this.traverse(ast, cb);
 };
@@ -109,9 +113,7 @@ module.exports.prototype.walk = function(src, cb) {
 module.exports.prototype.moonwalk = function(node, cb) {
   this.shouldStop = false;
 
-  if (typeof node !== 'object') {
-    throw new Error('node must be an object');
-  }
+  if (!isObject(node)) throw new Error('node must be an object');
 
   reverseTraverse.call(this, node, cb);
 };
