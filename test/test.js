@@ -2,8 +2,7 @@
 
 'use strict';
 
-// TODO switch to assert.strict
-const assert = require('assert');
+const assert = require('assert').strict;
 const fs = require('fs');
 const sinon = require('sinon');
 const Walker = require('../index.js');

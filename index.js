@@ -18,7 +18,7 @@ module.exports = function(options = {}) {
     delete options.parser;
   }
 
-  this.options = Object.assign({
+  this.options = {
     plugins: [
       'jsx',
       'flow',
@@ -40,8 +40,9 @@ module.exports = function(options = {}) {
       'optionalChaining'
     ],
     allowHashBang: true,
-    sourceType: 'module'
-  }, options);
+    sourceType: 'module',
+    ...options
+  };
 
   // We use global state to stop the recursive traversal of the AST
   this.shouldStop = false;
@@ -81,16 +82,15 @@ module.exports.prototype.traverse = function(node, cb) {
   } else if (node && isObject(node)) {
     cb(node);
 
-    // TODO switch to Object.entries
-    for (const key of Object.keys(node)) {
+    for (const [key, value] of Object.entries(node)) {
       // Avoid visited nodes
-      if (key === 'parent' || !node[key]) continue;
+      if (key === 'parent' || !value) continue;
 
-      if (isObject(node[key])) {
-        node[key].parent = node;
+      if (isObject(value)) {
+        value.parent = node;
       }
 
-      this.traverse(node[key], cb);
+      this.traverse(value, cb);
     }
   }
 };
