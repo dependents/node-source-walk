@@ -9,7 +9,8 @@
   "scripts": {
     "lint": "eslint index.js \"test/*.js\"",
     "mocha": "mocha",
-    "test": "npm run lint && npm run mocha"
+    "test": "npm run lint && npm run mocha",
+    "test:ci": "c8 npm run mocha"
   },
   "repository": {
     "type": "git",
@@ -37,6 +38,7 @@
     "@babel/parser": "^7.0.0"
   },
   "devDependencies": {
+    "c8": "^7.11.0",
     "eslint": "^8.10.0",
     "mocha": "^9.2.1",
     "sinon": "^13.0.1"
