@@ -7,8 +7,8 @@
     "index.js"
   ],
   "scripts": {
-    "lint": "eslint index.js \"test/*.js\"",
-    "fix": "npm run lint -- --fix",
+    "lint": "xo",
+    "fix": "xo --fix",
     "mocha": "mocha",
     "test": "npm run lint && npm run mocha",
     "test:ci": "c8 npm run mocha"
@@ -40,8 +40,54 @@
   },
   "devDependencies": {
     "c8": "^7.13.0",
-    "eslint": "^8.36.0",
     "mocha": "^9.2.2",
-    "sinon": "^13.0.2"
+    "sinon": "^13.0.2",
+    "xo": "^0.52.4"
+  },
+  "xo": {
+    "space": true,
+    "ignores": [
+      "test/fixtures/*"
+    ],
+    "rules": {
+      "arrow-body-style": "off",
+      "capitalized-comments": "off",
+      "comma-dangle": [
+        "error",
+        "never"
+      ],
+      "curly": [
+        "error",
+        "multi-line"
+      ],
+      "max-nested-callbacks": [
+        "error",
+        5
+      ],
+      "operator-linebreak": [
+        "error",
+        "after"
+      ],
+      "object-curly-spacing": [
+        "error",
+        "always"
+      ],
+      "space-before-function-paren": [
+        "error",
+        "never"
+      ],
+      "unicorn/prefer-module": "off",
+      "unicorn/prefer-node-protocol": "off",
+      "unicorn/prefer-top-level-await": "off",
+      "unicorn/prevent-abbreviations": "off"
+    },
+    "overrides": [
+      {
+        "files": "test/**",
+        "envs": [
+          "mocha"
+        ]
+      }
+    ]
   }
 }
