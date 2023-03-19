@@ -4,6 +4,7 @@
 
 const assert = require('assert').strict;
 const fs = require('fs');
+const path = require('path');
 const sinon = require('sinon');
 const Walker = require('../index.js');
 
@@ -16,13 +17,13 @@ describe('node-source-walk', () => {
 
   beforeEach(() => {
     walker = new Walker();
-    srcFile = fs.readFileSync(`${__dirname}/example/srcFile.js`, 'utf8');
+    srcFile = fs.readFileSync(path.join(__dirname, '/fixtures/srcFile.js'), 'utf8');
     ast = walker.parse(srcFile);
   });
 
   describe('general', () => {
     it('does not fail on binary scripts with a hashbang', () => {
-      const src = fs.readFileSync(`${__dirname}/example/hashbang.js`, 'utf8');
+      const src = fs.readFileSync(path.join(__dirname, '/fixtures/hashbang.js'), 'utf8');
 
       assert.doesNotThrow(() => {
         walker.parse(src);
