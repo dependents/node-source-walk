@@ -1,4 +1,4 @@
-### node-source-walk [![CI](https://img.shields.io/github/actions/workflow/status/dependents/node-source-walk/ci.yml?branch=main&label=CI&logo=github)](https://github.com/dependents/node-source-walk/actions/workflows/ci.yml?query=branch%3Amain) [![npm](https://img.shields.io/npm/v/node-source-walk)](https://www.npmjs.com/package/node-source-walk) [![npm](https://img.shields.io/npm/dm/node-source-walk)](https://www.npmjs.com/package/node-source-walk)
+#### node-source-walk [![CI](https://img.shields.io/github/actions/workflow/status/dependents/node-source-walk/ci.yml?branch=main&label=CI&logo=github)](https://github.com/dependents/node-source-walk/actions/workflows/ci.yml?query=branch%3Amain) [![npm](https://img.shields.io/npm/v/node-source-walk?logo=npm&logoColor=fff)](https://www.npmjs.com/package/node-source-walk) [![npm](https://img.shields.io/npm/dm/node-source-walk)](https://www.npmjs.com/package/node-source-walk)
 
 > Synchronously execute a callback on every node of a file's AST and stop walking whenever you see fit.
 
@@ -83,4 +83,4 @@ const walker = new Walker({
 
 ## License
 
-MIT
+[MIT](LICENSE)
