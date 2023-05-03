@@ -12,9 +12,9 @@ moonwalk.before.each(context => {
 });
 
 moonwalk('throws if not given a valid object', context => {
-  const cb = sinon.spy();
+  const callback = sinon.spy();
   assert.throws(() => {
-    context.walker.moonwalk('yo', cb);
+    context.walker.moonwalk('yo', callback);
   }, Error, 'node must be an object');
 });
 

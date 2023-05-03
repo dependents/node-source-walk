@@ -55,26 +55,26 @@ const walker = new Walker({
 
 ## Public Members
 
-### `walk(src, cb)`
+### `walk(src, callback)`
 
 * Recursively walks the given `src` from top to bottom
 * `src`: the contents of a file **OR** its (already parsed) AST
-* `cb`: a function that is called for every visited node
-  * The argument passed to `cb` will be the currently visited node.
+* `callback`: a function that is called for every visited node
+  * The argument passed to `callback` will be the currently visited node.
 
-### `moonwalk(node, cb)`
+### `moonwalk(node, callback)`
 
 * Recursively walks up an AST starting from the given node. This is a traversal that's in the opposite direction of `walk` and `traverse`
 * `node`: a valid AST node
-* `cb`: a function that is called for every node (specifically via visiting the parent(s) of every node recursively)
-  * The argument passed to `cb` will be the currently visited node.
+* `callback`: a function that is called for every node (specifically via visiting the parent(s) of every node recursively)
+  * The argument passed to `callback` will be the currently visited node.
 
 ### `stopWalking()`
 
 * Halts further walking of the AST until another manual call of `walk` or `moonwalk`
 * This is super-beneficial when dealing with large source files (or ASTs)
 
-### `traverse(node, cb)`
+### `traverse(node, callback)`
 
 * Allows you to traverse an AST node and execute a callback on it
 * Callback should expect the first argument to be an AST node, similar to `walk`'s callback

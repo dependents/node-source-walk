@@ -67,9 +67,9 @@ module.exports = class NodeSourceWalk {
 
   /**
    * Adapted from substack/node-detective
-   * Executes cb on a non-array AST node
+   * Executes callback on a non-array AST node
    */
-  traverse(node, cb) {
+  traverse(node, callback) {
     if (this.shouldStop) return;
 
     if (Array.isArray(node)) {
@@ -77,11 +77,11 @@ module.exports = class NodeSourceWalk {
         if (isObject(key)) {
           // Mark that the node has been visited
           key.parent = node;
-          this.traverse(key, cb);
+          this.traverse(key, callback);
         }
       }
     } else if (node && isObject(node)) {
-      cb(node);
+      callback(node);
 
       for (const [key, value] of Object.entries(node)) {
         // Avoid visited nodes
@@ -91,7 +91,7 @@ module.exports = class NodeSourceWalk {
           value.parent = node;
         }
 
-        this.traverse(value, cb);
+        this.traverse(value, callback);
       }
     }
   }
@@ -101,22 +101,22 @@ module.exports = class NodeSourceWalk {
    * the passed in src's ast
    *
    * @param {String|Object} src - The source code or AST to traverse
-   * @param {Function} cb - Called for every node
+   * @param {Function} callback - Called for every node
    */
-  walk(src, cb) {
+  walk(src, callback) {
     this.shouldStop = false;
 
     const ast = isObject(src) ? src : this.parse(src);
 
-    this.traverse(ast, cb);
+    this.traverse(ast, callback);
   }
 
-  moonwalk(node, cb) {
+  moonwalk(node, callback) {
     this.shouldStop = false;
 
     if (!isObject(node)) throw new Error('node must be an object');
 
-    this._reverseTraverse(node, cb);
+    this._reverseTraverse(node, callback);
   }
 
   /**
@@ -126,17 +126,17 @@ module.exports = class NodeSourceWalk {
     this.shouldStop = true;
   }
 
-  _reverseTraverse(node, cb) {
+  _reverseTraverse(node, callback) {
     if (this.shouldStop || !node.parent) return;
 
     if (Array.isArray(node.parent)) {
       for (const parent of node.parent) {
-        cb(parent);
+        callback(parent);
       }
     } else {
-      cb(node.parent);
+      callback(node.parent);
     }
 
-    this._reverseTraverse(node.parent, cb);
+    this._reverseTraverse(node.parent, callback);
   }
 };

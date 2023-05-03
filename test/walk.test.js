@@ -17,30 +17,30 @@ walk.before.each(context => {
   context.walker = new Walker();
   context.ast = context.walker.parse(context.srcFile);
   context.parseSpy = sinon.stub(context.walker, 'parse');
-  context.cb = sinon.spy();
+  context.callback = sinon.spy();
 });
 
 walk.after.each(context => {
   context.parseSpy.restore();
-  context.cb.resetHistory();
+  context.callback.resetHistory();
 });
 
 walk('parses the given source code', context => {
-  context.walker.walk(context.srcFile, context.cb);
+  context.walker.walk(context.srcFile, context.callback);
   assert.ok(context.parseSpy.called);
 });
 
 walk('calls the given callback for each node in the ast', context => {
-  context.walker.walk(context.ast, context.cb);
-  assert.ok(context.cb.called);
-  const node = context.cb.getCall(0).args[0];
+  context.walker.walk(context.ast, context.callback);
+  assert.ok(context.callback.called);
+  const node = context.callback.getCall(0).args[0];
   assert.type(node, 'object');
 });
 
 walk('reuses a given AST instead of parsing again', context => {
-  context.walker.walk(context.ast, context.cb);
+  context.walker.walk(context.ast, context.callback);
   assert.not.ok(context.parseSpy.called);
-  assert.ok(context.cb.called);
+  assert.ok(context.callback.called);
 });
 
 walk.run();

@@ -19,10 +19,10 @@ traverse.before.each(context => {
 });
 
 traverse('creates a parent reference for each node', context => {
-  const cb = sinon.spy();
-  context.walker.walk(context.ast, cb);
-  const firstNode = cb.getCall(0).args[0];
-  const secondNode = cb.getCall(1).args[0];
+  const callback = sinon.spy();
+  context.walker.walk(context.ast, callback);
+  const firstNode = callback.getCall(0).args[0];
+  const secondNode = callback.getCall(1).args[0];
   assert.is(secondNode.parent, firstNode);
 });
 
