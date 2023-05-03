@@ -7,6 +7,9 @@ function isObject(str) {
 }
 
 module.exports = class NodeSourceWalk {
+  // We use global state to stop the recursive traversal of the AST
+  #shouldStop = false;
+
   /**
    * @param  {Object} options - Options to configure parser
    * @param  {Object} options.parser - An object with a parse method that returns an AST
@@ -44,9 +47,6 @@ module.exports = class NodeSourceWalk {
       sourceType: 'module',
       ...options
     };
-
-    // We use global state to stop the recursive traversal of the AST
-    this.shouldStop = false;
   }
 
   /**
@@ -70,7 +70,7 @@ module.exports = class NodeSourceWalk {
    * Executes callback on a non-array AST node
    */
   traverse(node, callback) {
-    if (this.shouldStop) return;
+    if (this.#shouldStop) return;
 
     if (Array.isArray(node)) {
       for (const key of node) {
@@ -104,7 +104,7 @@ module.exports = class NodeSourceWalk {
    * @param {Function} callback - Called for every node
    */
   walk(src, callback) {
-    this.shouldStop = false;
+    this.#shouldStop = false;
 
     const ast = isObject(src) ? src : this.parse(src);
 
@@ -112,7 +112,7 @@ module.exports = class NodeSourceWalk {
   }
 
   moonwalk(node, callback) {
-    this.shouldStop = false;
+    this.#shouldStop = false;
 
     if (!isObject(node)) throw new Error('node must be an object');
 
@@ -123,11 +123,11 @@ module.exports = class NodeSourceWalk {
    * Halts further traversal of the AST
    */
   stopWalking() {
-    this.shouldStop = true;
+    this.#shouldStop = true;
   }
 
   _reverseTraverse(node, callback) {
-    if (this.shouldStop || !node.parent) return;
+    if (this.#shouldStop || !node.parent) return;
 
     if (Array.isArray(node.parent)) {
       for (const parent of node.parent) {
