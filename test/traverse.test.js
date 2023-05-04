@@ -1,6 +1,6 @@
 'use strict';
 
-const fs = require('fs').promises;
+const { readFile } = require('fs').promises;
 const path = require('path');
 const sinon = require('sinon');
 const { suite } = require('uvu');
@@ -10,7 +10,7 @@ const Walker = require('../index.js');
 const traverse = suite('traverse');
 
 traverse.before(async context => {
-  context.srcFile = await fs.readFile(path.join(__dirname, '/fixtures/srcFile.js'), 'utf8');
+  context.srcFile = await readFile(path.join(__dirname, '/fixtures/srcFile.js'), 'utf8');
 });
 
 traverse.before.each(context => {
