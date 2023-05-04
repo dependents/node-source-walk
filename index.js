@@ -58,7 +58,7 @@ module.exports = class NodeSourceWalk {
     options = options || this.options;
 
     // Keep around for consumers of parse that supply their own options
-    if (typeof options.allowHashBang === 'undefined') {
+    if (options.allowHashBang === undefined) {
       options.allowHashBang = true;
     }
 
