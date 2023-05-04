@@ -116,7 +116,7 @@ module.exports = class NodeSourceWalk {
 
     if (!isObject(node)) throw new Error('node must be an object');
 
-    this._reverseTraverse(node, callback);
+    this.#reverseTraverse(node, callback);
   }
 
   /**
@@ -126,7 +126,7 @@ module.exports = class NodeSourceWalk {
     this.#shouldStop = true;
   }
 
-  _reverseTraverse(node, callback) {
+  #reverseTraverse(node, callback) {
     if (this.#shouldStop || !node.parent) return;
 
     if (Array.isArray(node.parent)) {
@@ -137,6 +137,6 @@ module.exports = class NodeSourceWalk {
       callback(node.parent);
     }
 
-    this._reverseTraverse(node.parent, callback);
+    this.#reverseTraverse(node.parent, callback);
   }
 };
