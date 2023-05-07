@@ -2,10 +2,6 @@
 
 const parser = require('@babel/parser');
 
-function isObject(str) {
-  return typeof str === 'object' && !Array.isArray(str) && str !== null;
-}
-
 module.exports = class NodeSourceWalk {
   // We use global state to stop the recursive traversal of the AST
   #shouldStop = false;
@@ -140,3 +136,7 @@ module.exports = class NodeSourceWalk {
     this.#reverseTraverse(node.parent, callback);
   }
 };
+
+function isObject(str) {
+  return typeof str === 'object' && !Array.isArray(str) && str !== null;
+}
