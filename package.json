@@ -60,10 +60,6 @@
         "error",
         "multi-line"
       ],
-      "max-nested-callbacks": [
-        "error",
-        5
-      ],
       "operator-linebreak": [
         "error",
         "after"
