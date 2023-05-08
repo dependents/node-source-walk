@@ -15,7 +15,7 @@ moonwalk('throws if not given a valid object', context => {
   const callback = sinon.spy();
   assert.throws(() => {
     context.walker.moonwalk('yo', callback);
-  }, Error, 'node must be an object');
+  }, err => err instanceof Error && err.message === 'node must be an object');
 });
 
 moonwalk('visits the parent of the given node', context => {
