@@ -137,6 +137,6 @@ module.exports = class NodeSourceWalk {
   }
 };
 
-function isObject(str) {
-  return typeof str === 'object' && !Array.isArray(str) && str !== null;
+function isObject(value) {
+  return typeof value === 'object' && !Array.isArray(value) && value !== null;
 }
