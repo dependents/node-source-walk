@@ -50,9 +50,7 @@ module.exports = class NodeSourceWalk {
    * @param  {Object} [options] - Parser options
    * @return {Object} The AST of the given src
    */
-  parse(src, options) {
-    options = options || this.options;
-
+  parse(src, options = this.options) {
     // Keep around for consumers of parse that supply their own options
     if (options.allowHashBang === undefined) {
       options.allowHashBang = true;
