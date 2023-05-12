@@ -19,7 +19,7 @@ const walker = new Walker();
 
 // Assume src is the string contents of myfile.js
 // or the AST of an outside parse of myfile.js
-walker.walk(src, (node) => {
+walker.walk(src, node => {
   if (node.type === whateverImLookingFor) {
     // No need to keep traversing since we found what we wanted
     walker.stopWalking();
@@ -27,7 +27,7 @@ walker.walk(src, (node) => {
 });
 ```
 
-By default, Walker will use `@babel/parser` (supporting ES6, JSX, Flow, and all other available @babel/parser plugins) and the `sourceType: module`, but you can change any of the defaults as follows:
+By default, Walker will use `@babel/parser` (supporting ES6, JSX, Flow, and all other available `@babel/parser` plugins) and the `sourceType: module`, but you can change any of the defaults as follows:
 
 ```js
 const walker = new Walker({
@@ -40,7 +40,7 @@ const walker = new Walker({
 });
 ```
 
-* The supplied options are passed through to the parser, so you can configure it according to @babel/parser's [documentation](https://babeljs.io/docs/en/babel-parser.html).
+* The supplied options are passed through to the parser, so you can configure it according to `@babel/parser`'s [documentation](https://babeljs.io/docs/en/babel-parser.html).
 
 ## Swap out the parser
 
@@ -55,12 +55,12 @@ const walker = new Walker({
 * The custom parser must have a `.parse` method that takes in a string and returns an object/AST.
 * All of the other options supplied to the Walker constructor will be passed along as parser options to your chosen parser.
 
-## Public Members
+## API
 
 ### `walk(src, callback)`
 
 * Recursively walks the given `src` from top to bottom
-* `src`: the contents of a file **OR** its (already parsed) AST
+* `src`: the contents of a file **or** its (already parsed) AST
 * `callback`: a function that is called for every visited node
   * The argument passed to `callback` will be the currently visited node.
 
