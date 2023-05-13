@@ -74,7 +74,7 @@ module.exports = class NodeSourceWalk {
           this.traverse(key, callback);
         }
       }
-    } else if (node && isObject(node)) {
+    } else if (isObject(node)) {
       callback(node);
 
       for (const [key, value] of Object.entries(node)) {
