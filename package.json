@@ -1,6 +1,6 @@
 {
   "name": "node-source-walk",
-  "version": "6.0.1",
+  "version": "6.0.2",
   "description": "Execute a callback on every node of a source code's AST and stop walking when you see fit",
   "main": "index.js",
   "files": [
