@@ -62,6 +62,9 @@ module.exports = class NodeSourceWalk {
   /**
    * Adapted from substack/node-detective
    * Executes callback on a non-array AST node
+   *
+   * @param {Object|Array} node - AST node or array of nodes
+   * @param {Function} callback - Function executed for each visited node
    */
   traverse(node, callback) {
     if (this.#shouldStop) return;
@@ -91,8 +94,7 @@ module.exports = class NodeSourceWalk {
   }
 
   /**
-   * Executes the passed callback for every traversed node of
-   * the passed in src's ast
+   * Executes the passed callback for every traversed node of the passed in src's ast
    *
    * @param {String|Object} src - The source code or AST to traverse
    * @param {Function} callback - Called for every node
@@ -105,6 +107,12 @@ module.exports = class NodeSourceWalk {
     this.traverse(ast, callback);
   }
 
+  /**
+   * Walks upward through parent nodes, executing the callback for each ancestor
+   *
+   * @param {Object} node - The starting AST node
+   * @param {Function} callback - Called for each parent node
+   */
   moonwalk(node, callback) {
     this.#shouldStop = false;
 
@@ -120,6 +128,13 @@ module.exports = class NodeSourceWalk {
     this.#shouldStop = true;
   }
 
+  /**
+   * Traverses upward through parent nodes
+   *
+   * @param {Object} node - Current AST node
+   * @param {Function} callback - Called for each parent node
+   * @private
+   */
   #reverseTraverse(node, callback) {
     if (this.#shouldStop || !node.parent) return;
 
@@ -134,6 +149,13 @@ module.exports = class NodeSourceWalk {
     this.#reverseTraverse(node.parent, callback);
   }
 
+  /**
+   * Determines whether a value is a non-null object
+   *
+   * @param {*} value - Value to test
+   * @return {Boolean} True if value is a non-array object
+   * @private
+   */
   #isObject(value) {
     return typeof value === 'object' && !Array.isArray(value) && value !== null;
   }
