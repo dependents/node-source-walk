@@ -68,20 +68,20 @@ module.exports = class NodeSourceWalk {
 
     if (Array.isArray(node)) {
       for (const key of node) {
-        if (isObject(key)) {
+        if (this.#isObject(key)) {
           // Mark that the node has been visited
           key.parent = node;
           this.traverse(key, callback);
         }
       }
-    } else if (isObject(node)) {
+    } else if (this.#isObject(node)) {
       callback(node);
 
       for (const [key, value] of Object.entries(node)) {
         // Avoid visited nodes
         if (key === 'parent' || !value) continue;
 
-        if (isObject(value)) {
+        if (this.#isObject(value)) {
           value.parent = node;
         }
 
@@ -100,7 +100,7 @@ module.exports = class NodeSourceWalk {
   walk(src, callback) {
     this.#shouldStop = false;
 
-    const ast = isObject(src) ? src : this.parse(src);
+    const ast = this.#isObject(src) ? src : this.parse(src);
 
     this.traverse(ast, callback);
   }
@@ -108,7 +108,7 @@ module.exports = class NodeSourceWalk {
   moonwalk(node, callback) {
     this.#shouldStop = false;
 
-    if (!isObject(node)) throw new Error('node must be an object');
+    if (!this.#isObject(node)) throw new Error('node must be an object');
 
     this.#reverseTraverse(node, callback);
   }
@@ -133,8 +133,8 @@ module.exports = class NodeSourceWalk {
 
     this.#reverseTraverse(node.parent, callback);
   }
-};
 
-function isObject(value) {
-  return typeof value === 'object' && !Array.isArray(value) && value !== null;
-}
+  #isObject(value) {
+    return typeof value === 'object' && !Array.isArray(value) && value !== null;
+  }
+};
