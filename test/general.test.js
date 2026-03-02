@@ -1,7 +1,7 @@
 'use strict';
 
-const { readFile } = require('fs/promises');
-const path = require('path');
+const { readFile } = require('node:fs/promises');
+const path = require('node:path');
 const { suite } = require('uvu');
 const assert = require('uvu/assert');
 const Walker = require('../index.js');
