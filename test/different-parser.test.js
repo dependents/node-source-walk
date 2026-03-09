@@ -1,9 +1,7 @@
-'use strict';
-
-const sinon = require('sinon');
-const { suite } = require('uvu');
-const assert = require('uvu/assert');
-const Walker = require('../index.js');
+import sinon from 'sinon';
+import { suite } from 'uvu';
+import * as assert from 'uvu/assert';
+import Walker from '../index.js';
 
 const test = suite('when given a different parser');
 
