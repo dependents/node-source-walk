@@ -1,8 +1,6 @@
-'use strict';
+import * as parser from '@babel/parser';
 
-const parser = require('@babel/parser');
-
-module.exports = class NodeSourceWalk {
+export default class NodeSourceWalk {
   // We use global state to stop the recursive traversal of the AST
   #shouldStop = false;
 
@@ -160,4 +158,4 @@ module.exports = class NodeSourceWalk {
   #isObject(value) {
     return typeof value === 'object' && !Array.isArray(value) && value !== null;
   }
-};
+}

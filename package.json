@@ -2,9 +2,13 @@
   "name": "node-source-walk",
   "version": "7.0.2",
   "description": "Execute a callback on every node of a source code's AST and stop walking when you see fit",
-  "main": "index.js",
+  "type": "module",
+  "exports": {
+    "import": "./index.js",
+    "require": "./index.cjs"
+  },
   "files": [
-    "index.js"
+    "index.{cjs,js}"
   ],
   "scripts": {
     "lint": "xo",
@@ -33,7 +37,7 @@
   },
   "homepage": "https://github.com/dependents/node-source-walk",
   "engines": {
-    "node": ">=20"
+    "node": ">=20.19.0 || >=22.12.0"
   },
   "dependencies": {
     "@babel/parser": "^7.29.2"

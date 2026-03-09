@@ -1,10 +1,7 @@
-'use strict';
-
-const { readFile } = require('node:fs/promises');
-const path = require('node:path');
-const { suite } = require('uvu');
-const assert = require('uvu/assert');
-const Walker = require('../index.js');
+import { readFile } from 'node:fs/promises';
+import { suite } from 'uvu';
+import * as assert from 'uvu/assert';
+import Walker from '../index.js';
 
 const noop = () => {};
 
@@ -15,7 +12,7 @@ test.before.each(context => {
 });
 
 test('does not fail on binary scripts with a hashbang', async context => {
-  const src = await readFile(path.join(__dirname, '/fixtures/hashbang.js'), 'utf8');
+  const src = await readFile(new URL('fixtures/hashbang.js', import.meta.url), 'utf8');
 
   assert.not.throws(() => {
     context.walker.parse(src);

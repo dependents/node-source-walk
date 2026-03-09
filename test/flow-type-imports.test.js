@@ -1,8 +1,6 @@
-'use strict';
-
-const { suite } = require('uvu');
-const assert = require('uvu/assert');
-const Walker = require('../index.js');
+import { suite } from 'uvu';
+import * as assert from 'uvu/assert';
+import Walker from '../index.js';
 
 const test = suite('flow type imports');
 

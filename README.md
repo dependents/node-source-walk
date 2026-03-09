@@ -12,8 +12,10 @@ npm install node-source-walk
 
 ## Usage
 
+## ESM
+
 ```js
-const Walker = require('node-source-walk');
+import Walker from 'node-source-walk';
 
 const walker = new Walker();
 
@@ -25,6 +27,15 @@ walker.walk(src, node => {
     walker.stopWalking();
   }
 });
+```
+
+### CommonJS
+
+```js
+const Walker = require('node-source-walk');
+
+const walker = new Walker();
+// ...
 ```
 
 By default, Walker will use `@babel/parser` (supporting ES6, JSX, Flow, and all other available `@babel/parser` plugins) and the `sourceType: module`, but you can change any of the defaults as follows:

@@ -1,6 +1,4 @@
-'use strict';
-
-module.exports = [
+export default [
   {
     ignores: [
       'test/fixtures/**'
@@ -45,7 +43,6 @@ module.exports = [
         'multi-line'
       ],
       'prefer-template': 'error',
-      'unicorn/prefer-module': 'off',
       'unicorn/prefer-top-level-await': 'off',
       'unicorn/prevent-abbreviations': 'off'
     }
