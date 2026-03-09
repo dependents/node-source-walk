@@ -1,16 +1,13 @@
-'use strict';
-
-const { readFile } = require('node:fs/promises');
-const path = require('node:path');
-const sinon = require('sinon');
-const { suite } = require('uvu');
-const assert = require('uvu/assert');
-const Walker = require('../index.js');
+import { readFile } from 'node:fs/promises';
+import sinon from 'sinon';
+import { suite } from 'uvu';
+import * as assert from 'uvu/assert';
+import Walker from '../index.js';
 
 const test = suite('walk');
 
 test.before(async context => {
-  context.srcFile = await readFile(path.join(__dirname, '/fixtures/srcFile.js'), 'utf8');
+  context.srcFile = await readFile(new URL('fixtures/srcFile.js', import.meta.url), 'utf8');
 });
 
 test.before.each(context => {
