@@ -4,16 +4,16 @@ const { suite } = require('uvu');
 const assert = require('uvu/assert');
 const Walker = require('../index.js');
 
-const flowImports = suite('flow type imports');
+const test = suite('flow type imports');
 
-flowImports.before.each(context => {
+test.before.each(context => {
   context.walker = new Walker();
 });
 
-flowImports('parses', context => {
+test('parses', context => {
   assert.not.throws(() => {
     context.walker.parse('import { Something, type SomethingElse } from "someModule";');
   });
 });
 
-flowImports.run();
+test.run();

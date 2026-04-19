@@ -5,20 +5,20 @@ const { suite } = require('uvu');
 const assert = require('uvu/assert');
 const Walker = require('../index.js');
 
-const moonwalk = suite('moonwalk');
+const test = suite('moonwalk');
 
-moonwalk.before.each(context => {
+test.before.each(context => {
   context.walker = new Walker();
 });
 
-moonwalk('throws if not given a valid object', context => {
+test('throws if not given a valid object', context => {
   const callback = sinon.spy();
   assert.throws(() => {
     context.walker.moonwalk('yo', callback);
   }, err => err instanceof Error && err.message === 'node must be an object');
 });
 
-moonwalk('visits the parent of the given node', context => {
+test('visits the parent of the given node', context => {
   const parent = {};
   const child = {
     type: 'ExpressionStatement',
@@ -31,7 +31,7 @@ moonwalk('visits the parent of the given node', context => {
   });
 });
 
-moonwalk('stops traversing upwards when there are no more parents', context => {
+test('stops traversing upwards when there are no more parents', context => {
   const spy = sinon.spy();
   const parent = {};
   const child = {
@@ -43,7 +43,7 @@ moonwalk('stops traversing upwards when there are no more parents', context => {
   assert.is(spy.callCount, 1);
 });
 
-moonwalk('handles more than one level of nesting', context => {
+test('handles more than one level of nesting', context => {
   const spy = sinon.spy();
   const grandParent = {};
   const parent = { parent: grandParent };
@@ -56,7 +56,7 @@ moonwalk('handles more than one level of nesting', context => {
   assert.is(spy.callCount, 2);
 });
 
-moonwalk('when given a node that does not have a parent does not continue', context => {
+test('when given a node that does not have a parent does not continue', context => {
   const spy = sinon.spy();
   const child = {
     type: 'ExpressionStatement'
@@ -66,7 +66,7 @@ moonwalk('when given a node that does not have a parent does not continue', cont
   assert.not.ok(spy.called);
 });
 
-moonwalk('when told to stop walking does not continue', context => {
+test('when told to stop walking does not continue', context => {
   const spy = sinon.spy();
   const grandParent = {};
   const parent = { parent: grandParent };
@@ -83,7 +83,7 @@ moonwalk('when told to stop walking does not continue', context => {
   assert.is(spy.callCount, 1);
 });
 
-moonwalk('when the parent is a list of children calls the callback for each of the parent elements', context => {
+test('when the parent is a list of children calls the callback for each of the parent elements', context => {
   const spy = sinon.spy();
   const grandParent = {};
   const parent = [{
@@ -99,4 +99,4 @@ moonwalk('when the parent is a list of children calls the callback for each of t
   assert.is(spy.callCount, 2);
 });
 
-moonwalk.run();
+test.run();

@@ -5,13 +5,13 @@ const { suite } = require('uvu');
 const assert = require('uvu/assert');
 const Walker = require('../index.js');
 
-const parse = suite('parse');
+const test = suite('parse');
 
-parse.before.each(context => {
+test.before.each(context => {
   context.walker = new Walker();
 });
 
-parse('when no parser options are supplied uses the defaults', context => {
+test('when no parser options are supplied uses the defaults', context => {
   const src = '1+1;';
   const stub = sinon.stub(context.walker.parser, 'parse');
 
@@ -21,4 +21,4 @@ parse('when no parser options are supplied uses the defaults', context => {
   stub.restore();
 });
 
-parse.run();
+test.run();

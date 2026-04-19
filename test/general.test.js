@@ -8,13 +8,13 @@ const Walker = require('../index.js');
 
 const noop = () => {};
 
-const general = suite('general');
+const test = suite('general');
 
-general.before.each(context => {
+test.before.each(context => {
   context.walker = new Walker();
 });
 
-general('does not fail on binary scripts with a hashbang', async context => {
+test('does not fail on binary scripts with a hashbang', async context => {
   const src = await readFile(path.join(__dirname, '/fixtures/hashbang.js'), 'utf8');
 
   assert.not.throws(() => {
@@ -22,29 +22,29 @@ general('does not fail on binary scripts with a hashbang', async context => {
   });
 });
 
-general('parses es6 by default', context => {
+test('parses es6 by default', context => {
   assert.not.throws(() => {
     context.walker.walk('() => console.log("foo")', noop);
     context.walker.walk('import {foo} from "bar";', noop);
   });
 });
 
-general('does not throw on ES7 async functions', context => {
+test('does not throw on ES7 async functions', context => {
   assert.not.throws(() => {
     context.walker.walk('async function foo() {}', noop);
   });
 });
 
-general('does not throw on dynamic imports', context => {
+test('does not throw on dynamic imports', context => {
   assert.not.throws(() => {
     context.walker.walk('import("foo").then(foo => foo());', noop);
   });
 });
 
-general('does not throw when hitting a decorator before an export', context => {
+test('does not throw when hitting a decorator before an export', context => {
   assert.not.throws(() => {
     context.walker.walk('@decorator\nexport class Foo {}', noop);
   });
 });
 
-general.run();
+test.run();
