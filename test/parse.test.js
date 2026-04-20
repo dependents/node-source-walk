@@ -21,4 +21,10 @@ test('when no parser options are supplied uses the defaults', context => {
   stub.restore();
 });
 
+test('does not mutate caller options when allowHashBang is absent', context => {
+  const options = { sourceType: 'script' };
+  context.walker.parse('1+1;', options);
+  assert.type(options.allowHashBang, 'undefined');
+});
+
 test.run();

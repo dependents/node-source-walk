@@ -11,12 +11,8 @@ module.exports = class NodeSourceWalk {
    * @param  {Object} options.parser - An object with a parse method that returns an AST
    */
   constructor(options = {}) {
-    this.parser = options.parser || parser;
-
-    if (options.parser) {
-      // We don't want to send that down to the actual parser
-      delete options.parser;
-    }
+    const { parser: customParser, ...restOptions } = options;
+    this.parser = customParser || parser;
 
     this.options = {
       plugins: [
@@ -41,7 +37,7 @@ module.exports = class NodeSourceWalk {
       ],
       allowHashBang: true,
       sourceType: 'module',
-      ...options
+      ...restOptions
     };
   }
 
@@ -53,7 +49,7 @@ module.exports = class NodeSourceWalk {
   parse(src, options = this.options) {
     // Keep around for consumers of parse that supply their own options
     if (options.allowHashBang === undefined) {
-      options.allowHashBang = true;
+      return this.parser.parse(src, { ...options, allowHashBang: true });
     }
 
     return this.parser.parse(src, options);

@@ -26,4 +26,15 @@ test('does not send it to the parser as an option', context => {
   assert.type(parserOptions.parser, 'undefined');
 });
 
+test('does not mutate the options object passed to the constructor', () => {
+  const opts = {
+    parser: {
+      parse: sinon.stub()
+    }
+  };
+
+  new Walker(opts); // eslint-disable-line no-new
+  assert.ok('parser' in opts, 'parser key was deleted from caller\'s object');
+});
+
 test.run();
