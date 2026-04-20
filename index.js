@@ -82,9 +82,10 @@ module.exports = class NodeSourceWalk {
         if (key === 'parent') continue;
 
         const value = node[key];
-        if (!value) continue;
+        // Only recurse into objects and arrays; skip primitives and null
+        if (value === null || typeof value !== 'object') continue;
 
-        if (this.#isObject(value)) {
+        if (!Array.isArray(value)) {
           value.parent = node;
         }
 
