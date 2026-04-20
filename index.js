@@ -71,6 +71,7 @@ module.exports = class NodeSourceWalk {
           // Mark that the node has been visited
           key.parent = node;
           this.traverse(key, callback);
+          if (this.#shouldStop) return;
         }
       }
     } else if (this.#isObject(node)) {
@@ -85,6 +86,7 @@ module.exports = class NodeSourceWalk {
         }
 
         this.traverse(value, callback);
+        if (this.#shouldStop) return;
       }
     }
   }
@@ -137,6 +139,7 @@ module.exports = class NodeSourceWalk {
     if (Array.isArray(node.parent)) {
       for (const parent of node.parent) {
         callback(parent);
+        if (this.#shouldStop) return;
       }
     } else {
       callback(node.parent);

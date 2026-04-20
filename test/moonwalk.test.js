@@ -99,4 +99,19 @@ test('when the parent is a list of children calls the callback for each of the p
   assert.is(spy.callCount, 2);
 });
 
+test('stops iterating array-parent siblings when walking is stopped', context => {
+  const spy = sinon.spy();
+  const sibling = { type: 'ExpressionStatement' };
+  const child = { type: 'ExpressionStatement' };
+  const arrayParent = [sibling, child];
+  child.parent = arrayParent;
+
+  context.walker.moonwalk(child, () => {
+    spy();
+    context.walker.stopWalking();
+  });
+
+  assert.is(spy.callCount, 1);
+});
+
 test.run();

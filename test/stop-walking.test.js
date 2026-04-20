@@ -29,4 +29,30 @@ test('halts further traversal of the AST', context => {
   assert.ok(spy.calledOnce);
 });
 
+test('stops visiting array siblings when walking is stopped inside one', context => {
+  const visited = [];
+
+  context.walker.walk('foo; bar;', node => {
+    if (node.type === 'ExpressionStatement') {
+      visited.push(node);
+      context.walker.stopWalking();
+    }
+  });
+
+  assert.is(visited.length, 1);
+});
+
+test('stops visiting object property children when walking is stopped inside one', context => {
+  const visited = [];
+
+  context.walker.walk('a + b', node => {
+    if (node.type === 'Identifier') {
+      visited.push(node.name);
+      context.walker.stopWalking();
+    }
+  });
+
+  assert.is(visited.length, 1);
+});
+
 test.run();
