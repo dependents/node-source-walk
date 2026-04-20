@@ -77,9 +77,12 @@ module.exports = class NodeSourceWalk {
     } else if (this.#isObject(node)) {
       callback(node);
 
-      for (const [key, value] of Object.entries(node)) {
+      for (const key of Object.keys(node)) {
         // Avoid visited nodes
-        if (key === 'parent' || !value) continue;
+        if (key === 'parent') continue;
+
+        const value = node[key];
+        if (!value) continue;
 
         if (this.#isObject(value)) {
           value.parent = node;
