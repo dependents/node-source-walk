@@ -36,7 +36,7 @@
     "node": ">=18"
   },
   "dependencies": {
-    "@babel/parser": "^7.29.0"
+    "@babel/parser": "^7.29.2"
   },
   "devDependencies": {
     "c8": "^10.1.3",
