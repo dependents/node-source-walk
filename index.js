@@ -7,8 +7,8 @@ module.exports = class NodeSourceWalk {
   #shouldStop = false;
 
   /**
-   * @param  {Object} options - Options to configure parser
-   * @param  {Object} options.parser - An object with a parse method that returns an AST
+   * @param  {object} [options] - Options to configure parser
+   * @param  {object} [options.parser] - An object with a parse method that returns an AST
    */
   constructor(options = {}) {
     const { parser: customParser, ...restOptions } = options;
@@ -42,9 +42,9 @@ module.exports = class NodeSourceWalk {
   }
 
   /**
-   * @param  {String} src
-   * @param  {Object} [options] - Parser options
-   * @return {Object} The AST of the given src
+   * @param  {string} src
+   * @param  {object} [options] - Parser options
+   * @return {object} The AST of the given src
    */
   parse(src, options = this.options) {
     // Keep around for consumers of parse that supply their own options
@@ -59,8 +59,8 @@ module.exports = class NodeSourceWalk {
    * Adapted from substack/node-detective
    * Executes callback on a non-array AST node
    *
-   * @param {Object|Array} node - AST node or array of nodes
-   * @param {Function} callback - Function executed for each visited node
+   * @param {object|object[]} node - AST node or array of nodes
+   * @param {function(object): void} callback - Function executed for each visited node
    */
   traverse(node, callback) {
     if (this.#shouldStop) return;
@@ -98,8 +98,8 @@ module.exports = class NodeSourceWalk {
   /**
    * Executes the passed callback for every traversed node of the passed in src's ast
    *
-   * @param {String|Object} src - The source code or AST to traverse
-   * @param {Function} callback - Called for every node
+   * @param {string|object} src - The source code or AST to traverse
+   * @param {function(object): void} callback - Called for every node
    */
   walk(src, callback) {
     this.#shouldStop = false;
@@ -112,8 +112,8 @@ module.exports = class NodeSourceWalk {
   /**
    * Walks upward through parent nodes, executing the callback for each ancestor
    *
-   * @param {Object} node - The starting AST node
-   * @param {Function} callback - Called for each parent node
+   * @param {object} node - The starting AST node
+   * @param {function(object): void} callback - Called for each parent node
    */
   moonwalk(node, callback) {
     this.#shouldStop = false;
@@ -133,9 +133,8 @@ module.exports = class NodeSourceWalk {
   /**
    * Traverses upward through parent nodes
    *
-   * @param {Object} node - Current AST node
-   * @param {Function} callback - Called for each parent node
-   * @private
+   * @param {object} node - Current AST node
+   * @param {function(object): void} callback - Called for each parent node
    */
   #reverseTraverse(node, callback) {
     if (this.#shouldStop || !node.parent) return;
@@ -156,8 +155,7 @@ module.exports = class NodeSourceWalk {
    * Determines whether a value is a non-null object
    *
    * @param {*} value - Value to test
-   * @return {Boolean} True if value is a non-array object
-   * @private
+   * @return {boolean} True if value is a non-array object
    */
   #isObject(value) {
     return typeof value === 'object' && !Array.isArray(value) && value !== null;
