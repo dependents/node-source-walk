@@ -3,12 +3,11 @@
   "version": "7.0.2",
   "description": "Execute a callback on every node of a source code's AST and stop walking when you see fit",
   "type": "module",
-  "exports": {
-    "import": "./index.js",
-    "require": "./index.cjs"
-  },
+	"exports": {
+		".": "./index.js"
+	},
   "files": [
-    "index.{cjs,js}"
+    "index.js"
   ],
   "scripts": {
     "lint": "xo",

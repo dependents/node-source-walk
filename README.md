@@ -32,7 +32,7 @@ walker.walk(src, node => {
 ### CommonJS
 
 ```js
-const Walker = require('node-source-walk');
+const { default: Walker } = require('node-source-walk');
 
 const walker = new Walker();
 // ...
