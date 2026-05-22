@@ -1,43 +1,53 @@
 import { readFile } from 'node:fs/promises';
-import sinon from 'sinon';
-import { suite } from 'uvu';
-import * as assert from 'uvu/assert';
+import {
+  describe,
+  it,
+  expect,
+  beforeAll,
+  beforeEach,
+  afterEach,
+  vi
+} from 'vitest';
 import Walker from '../index.js';
 
-const test = suite('walk');
+describe('walk', () => {
+  let srcFile;
+  let walker;
+  let ast;
+  let parseSpy;
+  let callback;
 
-test.before(async context => {
-  context.srcFile = await readFile(new URL('fixtures/srcFile.js', import.meta.url), 'utf8');
+  beforeAll(async() => {
+    srcFile = await readFile(new URL('fixtures/srcFile.js', import.meta.url), 'utf8');
+  });
+
+  beforeEach(() => {
+    walker = new Walker();
+    ast = walker.parse(srcFile);
+    parseSpy = vi.spyOn(walker, 'parse');
+    callback = vi.fn();
+  });
+
+  afterEach(() => {
+    parseSpy.mockRestore();
+    callback.mockReset();
+  });
+
+  it('parses the given source code', () => {
+    walker.walk(srcFile, callback);
+    expect(parseSpy).toHaveBeenCalledOnce();
+  });
+
+  it('calls the given callback for each node in the ast', () => {
+    walker.walk(ast, callback);
+    expect(callback).toHaveBeenCalled();
+    const node = callback.mock.calls[0][0];
+    expect(node).toBeTypeOf('object');
+  });
+
+  it('reuses a given AST instead of parsing again', () => {
+    walker.walk(ast, callback);
+    expect(parseSpy).not.toHaveBeenCalled();
+    expect(callback).toHaveBeenCalled();
+  });
 });
-
-test.before.each(context => {
-  context.walker = new Walker();
-  context.ast = context.walker.parse(context.srcFile);
-  context.parseSpy = sinon.stub(context.walker, 'parse');
-  context.callback = sinon.spy();
-});
-
-test.after.each(context => {
-  context.parseSpy.restore();
-  context.callback.resetHistory();
-});
-
-test('parses the given source code', context => {
-  context.walker.walk(context.srcFile, context.callback);
-  assert.ok(context.parseSpy.called);
-});
-
-test('calls the given callback for each node in the ast', context => {
-  context.walker.walk(context.ast, context.callback);
-  assert.ok(context.callback.called);
-  const node = context.callback.getCall(0).args[0];
-  assert.type(node, 'object');
-});
-
-test('reuses a given AST instead of parsing again', context => {
-  context.walker.walk(context.ast, context.callback);
-  assert.not.ok(context.parseSpy.called);
-  assert.ok(context.callback.called);
-});
-
-test.run();
