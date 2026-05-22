@@ -12,8 +12,8 @@
   "scripts": {
     "lint": "xo",
     "fix": "xo --fix",
-    "vitest":  "vitest run",
-    "test":    "npm run lint && vitest run",
+    "vitest": "vitest run",
+    "test": "npm run lint && vitest run",
     "test:ci": "vitest run --coverage"
   },
   "repository": {
