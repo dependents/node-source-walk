@@ -1,25 +1,29 @@
-import sinon from 'sinon';
-import { suite } from 'uvu';
-import * as assert from 'uvu/assert';
+import {
+  describe,
+  it,
+  expect,
+  beforeEach,
+  vi
+} from 'vitest';
 import Walker from '../index.js';
 
-const test = suite('jsx');
+describe('jsx', () => {
+  let walker;
 
-test.before.each(context => {
-  context.walker = new Walker();
-});
-
-test('parses', context => {
-  const spy = sinon.spy();
-
-  context.walker.walk('<jsx />', node => {
-    if (node.type === 'JSXIdentifier') {
-      spy();
-      assert.is(node.name, 'jsx');
-    }
+  beforeEach(() => {
+    walker = new Walker();
   });
 
-  assert.is(spy.callCount, 1);
-});
+  it('parses', () => {
+    const spy = vi.fn();
 
-test.run();
+    walker.walk('<jsx />', node => {
+      if (node.type === 'JSXIdentifier') {
+        spy();
+        expect(node.name).toBe('jsx');
+      }
+    });
+
+    expect(spy).toHaveBeenCalledOnce();
+  });
+});

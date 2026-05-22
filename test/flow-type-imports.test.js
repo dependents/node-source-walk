@@ -1,17 +1,21 @@
-import { suite } from 'uvu';
-import * as assert from 'uvu/assert';
+import {
+  describe,
+  it,
+  expect,
+  beforeEach
+} from 'vitest';
 import Walker from '../index.js';
 
-const test = suite('flow type imports');
+describe('flow type imports', () => {
+  let walker;
 
-test.before.each(context => {
-  context.walker = new Walker();
-});
+  beforeEach(() => {
+    walker = new Walker();
+  });
 
-test('parses', context => {
-  assert.not.throws(() => {
-    context.walker.parse('import { Something, type SomethingElse } from "someModule";');
+  it('parses', () => {
+    expect(() => {
+      walker.parse('import { Something, type SomethingElse } from "someModule";');
+    }).not.toThrow();
   });
 });
-
-test.run();

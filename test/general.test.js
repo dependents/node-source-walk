@@ -1,47 +1,51 @@
 import { readFile } from 'node:fs/promises';
-import { suite } from 'uvu';
-import * as assert from 'uvu/assert';
+import {
+  describe,
+  it,
+  expect,
+  beforeEach
+} from 'vitest';
 import Walker from '../index.js';
 
 const noop = () => {};
 
-const test = suite('general');
+describe('general', () => {
+  let walker;
 
-test.before.each(context => {
-  context.walker = new Walker();
-});
+  beforeEach(() => {
+    walker = new Walker();
+  });
 
-test('does not fail on binary scripts with a hashbang', async context => {
-  const src = await readFile(new URL('fixtures/hashbang.js', import.meta.url), 'utf8');
+  it('does not fail on binary scripts with a hashbang', async() => {
+    const src = await readFile(new URL('fixtures/hashbang.js', import.meta.url), 'utf8');
 
-  assert.not.throws(() => {
-    context.walker.parse(src);
+    expect(() => {
+      walker.parse(src);
+    }).not.toThrow();
+  });
+
+  it('parses es6 by default', () => {
+    expect(() => {
+      walker.walk('() => console.log("foo")', noop);
+      walker.walk('import {foo} from "bar";', noop);
+    }).not.toThrow();
+  });
+
+  it('does not throw on ES7 async functions', () => {
+    expect(() => {
+      walker.walk('async function foo() {}', noop);
+    }).not.toThrow();
+  });
+
+  it('does not throw on dynamic imports', () => {
+    expect(() => {
+      walker.walk('import("foo").then(foo => foo());', noop);
+    }).not.toThrow();
+  });
+
+  it('does not throw when hitting a decorator before an export', () => {
+    expect(() => {
+      walker.walk('@decorator\nexport class Foo {}', noop);
+    }).not.toThrow();
   });
 });
-
-test('parses es6 by default', context => {
-  assert.not.throws(() => {
-    context.walker.walk('() => console.log("foo")', noop);
-    context.walker.walk('import {foo} from "bar";', noop);
-  });
-});
-
-test('does not throw on ES7 async functions', context => {
-  assert.not.throws(() => {
-    context.walker.walk('async function foo() {}', noop);
-  });
-});
-
-test('does not throw on dynamic imports', context => {
-  assert.not.throws(() => {
-    context.walker.walk('import("foo").then(foo => foo());', noop);
-  });
-});
-
-test('does not throw when hitting a decorator before an export', context => {
-  assert.not.throws(() => {
-    context.walker.walk('@decorator\nexport class Foo {}', noop);
-  });
-});
-
-test.run();
